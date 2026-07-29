@@ -33,6 +33,9 @@ jobs:
         run: |
           python scripts/generate_schema.py --check
           python scripts/validate_catalog.py
+          # Thumbnails are gitignored and rebuilt (see scripts/generate_thumbnails.py); a bare
+          # checkout has none, so generate first, then --check verifies the output is deterministic.
+          python scripts/generate_thumbnails.py
           python scripts/generate_thumbnails.py --check
       - run: python -m pytest -q
       - name: Landing-page data is up to date
