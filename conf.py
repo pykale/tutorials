@@ -108,6 +108,14 @@ html_title = "PyKale Tutorials"
 html_static_path = ["_static"]
 html_css_files = ["custom.css"]
 html_js_files = ["js/catalog.js", "js/feedback.js", "js/search.js"]
+# _static/pykale_logo.png is gitignored and sourced from _shared/assets/logos. Copy it now, at config
+# import, so it exists before Sphinx validates html_logo -- a bare checkout (as CI runs) otherwise
+# warns that the logo is missing, which is fatal under -W. Runs before builder-inited, where the
+# logo check has already fired.
+import shutil as _shutil  # noqa: E402
+
+_shutil.copyfile(REPO_ROOT / "_shared" / "assets" / "logos" / "pykale_logo.png", REPO_ROOT / "_static" / "pykale_logo.png")
+
 html_logo = "_static/pykale_logo.png"
 # favicon handled by sphinx-favicon (see `favicons` below), not html_favicon.
 

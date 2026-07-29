@@ -49,3 +49,6 @@ _generated/
 _static/tutorials.json
 # copied at setup from _shared/assets/logos
 _static/pykale_logo.png
+
+# Internal working note, kept local (not published)
+docs/PYTORCH_ALIGNMENT.md
