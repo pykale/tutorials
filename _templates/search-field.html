@@ -1,0 +1,16 @@
+{# Overrides pydata's search-field to drop the "Ctrl+K" hint. A real, directly-typeable input;
+   Enter runs local Sphinx search. Ctrl/Cmd+K still focuses it (see _static/js/search.js). #}
+<form class="bd-search d-flex align-items-center"
+      action="{{ pathto('search') }}"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="{{ theme_search_bar_text }}"
+         aria-label="{{ theme_search_bar_text }}"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+</form>

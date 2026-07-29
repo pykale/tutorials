@@ -1,0 +1,72 @@
+{#-
+  Custom primary navigation for PyKale Tutorials.
+
+  Overrides pydata-sphinx-theme's navbar-nav component to provide named dropdowns (Learn, Domains,
+  Ecosystem, More) instead of a flat list of top-level pages. The Domains menu is data-driven from
+  the catalogue (passed in as `pky_nav.domains` via conf.py's html-page-context hook), so adding a
+  domain needs no template edit. Markup is Bootstrap 5 (bundled with the theme); dropdowns are
+  keyboard-accessible via the theme's bundled JS.
+-#}
+<nav class="navbar-nav pky-navbar" aria-label="Main navigation">
+  <ul class="bd-navbar-elements navbar-nav">
+
+    {#- Learn -#}
+    <li class="nav-item dropdown pky-dropdown">
+      <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false" aria-haspopup="true">Learn</button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ pathto('getting-started') }}">Getting started</a></li>
+        <li><a class="dropdown-item" href="{{ pathto('all-tutorials') }}">All tutorials</a></li>
+        <li><a class="dropdown-item" href="{{ pathto('learning-paths') }}">Learning paths</a></li>
+        <li><a class="dropdown-item" href="{{ pathto('tutorial-status') }}">Tutorial status</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="https://pykale.readthedocs.io" target="_blank"
+               rel="noopener">PyKale API docs<span class="pky-ext" aria-hidden="true"> ↗</span></a></li>
+      </ul>
+    </li>
+
+    {#- Domains (data-driven) -#}
+    <li class="nav-item dropdown pky-dropdown">
+      <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false" aria-haspopup="true">Domains</button>
+      <ul class="dropdown-menu">
+        {% for d in pky_nav.domains %}
+        <li>
+          <a class="dropdown-item" href="{{ pathto(d.docname) }}">
+            <span class="pky-dot" style="background: {{ d.color }}" aria-hidden="true"></span>{{ d.label }}
+            {% if d.coming_soon %}<span class="pky-menu-badge">Soon</span>{% endif %}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </li>
+
+    {#- Ecosystem -#}
+    <li class="nav-item dropdown pky-dropdown">
+      <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false" aria-haspopup="true">Ecosystem</button>
+      <ul class="dropdown-menu">
+        {% for e in pky_nav.ecosystem %}
+        <li>
+          <a class="dropdown-item" href="{{ e.url }}" target="_blank" rel="noopener">
+            {{ e.name }}<span class="pky-ext" aria-hidden="true"> ↗</span></a>
+        </li>
+        {% endfor %}
+      </ul>
+    </li>
+
+    {#- More -#}
+    <li class="nav-item dropdown pky-dropdown">
+      <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false" aria-haspopup="true">More</button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="{{ pathto('CONTRIBUTING') }}">Contributing</a></li>
+        <li><a class="dropdown-item" href="{{ pathto('about') }}">About</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="https://github.com/pykale/pykale" target="_blank"
+               rel="noopener">GitHub<span class="pky-ext" aria-hidden="true"> ↗</span></a></li>
+      </ul>
+    </li>
+
+  </ul>
+</nav>

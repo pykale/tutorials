@@ -1,0 +1,4 @@
+# Extra dependencies for this tutorial, on top of the repo core (see pyproject.toml).
+# Install with:  pip install -r requirements.txt
+
+torchsummary>=1.5.1

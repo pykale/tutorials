@@ -1,0 +1,90 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pykale-tutorials"
+version = "0.1.0"
+description = "Runnable tutorials for PyKale, published as a sphinx-gallery."
+readme = "README.md"
+license = { file = "LICENSE" }
+# Track pykale's own support window (setup.py: python_requires=">=3.10,<3.13").
+requires-python = ">=3.10,<3.13"
+authors = [
+    { name = "Charles Anjah", email = "cmanjah@outlook.com" },
+    { name = "PyKale Contributors" },
+]
+maintainers = [{ name = "Charles Anjah", email = "cmanjah@outlook.com" }]
+keywords = ["machine learning", "multimodal learning", "transfer learning", "tutorials"]
+classifiers = [
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Only what every tutorial needs. Anything narrower belongs in that tutorial's requirements.txt.
+dependencies = [
+    "numpy",
+    "pandas",
+    "pytorch-lightning",
+    "scikit-learn",
+    "torch==2.6.0",
+    "torchvision",
+    "yacs>=0.1.8",
+]
+
+[project.optional-dependencies]
+docs = [
+    "myst-parser>=4.0",
+    "nbsphinx",
+    "nbsphinx-link",
+    "pillow>=12.2.0",
+    "pydata-sphinx-theme>=0.16",
+    "sphinx==8.1.3",
+    "sphinx-copybutton>=0.5",
+    "sphinx-design>=0.6",
+    "sphinx-gallery>=0.18,<0.20",
+    "sphinx-reredirects>=0.1",
+    "sphinx-sitemap>=2.6",
+    "sphinxcontrib-mermaid>=1.0",
+]
+dev = [
+    "jsonschema>=4.23",
+    "pre-commit",
+    "pydantic>=2.9",
+    "pytest",
+    "pyyaml",
+]
+
+[project.urls]
+Homepage = "https://github.com/pykale/tutorials"
+Library = "https://github.com/pykale/pykale"
+Documentation = "https://pykale.readthedocs.io"
+
+[tool.setuptools]
+# Nothing here is importable as a package; the tutorials are scripts and the gallery is data.
+packages = []
+
+[tool.black]
+line-length = 120
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 120
+known_first_party = ["kale"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+# Only the build scripts are type-checked. Tutorial code mirrors upstream examples verbatim.
+files = ["scripts", "_shared"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# scripts/ holds the modules under test; _shared/ is imported by the gallery-config tests.
+pythonpath = ["scripts", "_shared"]
+addopts = "-ra"

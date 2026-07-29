@@ -1,0 +1,96 @@
+name: docs
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # Nightly, 03:17 UTC. Off-peak minute to avoid the top-of-hour runner crush.
+    - cron: "17 3 * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    # Cheap and catches most mistakes, so it runs first and gates the build. Matches pykale's own
+    # support window: Python 3.10, 3.11 and 3.12.
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install "pydantic>=2.9" pyyaml jsonschema pytest
+      - name: Catalog, metadata, schema and thumbnails agree
+        run: |
+          python scripts/generate_schema.py --check
+          python scripts/validate_catalog.py
+          python scripts/generate_thumbnails.py --check
+      - run: python -m pytest -q
+      - name: Landing-page data is up to date
+        run: python scripts/export_landing_page.py --check --output ../landing-page/src/data/tutorials.json
+        continue-on-error: true  # landing-page/ is a sibling repo; absent in a bare checkout
+
+  build:
+    # Structure-only build on PRs and main pushes: renders every tutorial from source but executes
+    # none, so it is fast (~2 min) and needs no runtime/dataset dependencies. Runtime breakage is
+    # caught separately by the nightly job below.
+    needs: validate
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e ".[docs,dev]"
+      - name: Build (no execution)
+        run: make html-noplot
+      - uses: actions/upload-artifact@v4
+        with:
+          name: html
+          path: _build/html
+          retention-days: 14
+
+  nightly-exec:
+    # The only job that actually RUNS tutorials. Without it, a narrative with a runtime bug (a wrong
+    # kale call, a shape mismatch) passes every PR check and only breaks after merge. Executes the
+    # CPU-runnable, non-draft tutorials -- the sphinx-gallery filter and list_runnable.py share one
+    # `is_runnable` definition, so exactly the same set installs and runs. GPU-required tutorials are
+    # rendered but never executed here, matching PyTorch's curated do-not-run list.
+    needs: validate
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e ".[docs,dev]"
+      - name: Install runnable tutorials' extra dependencies
+        run: |
+          python scripts/list_runnable.py --requirements | while read -r req; do
+            echo "Installing $req"
+            pip install -r "$req"
+          done
+      - name: Full build (executes runnable tutorials)
+        run: make html
+      - uses: actions/upload-artifact@v4
+        with:
+          name: html-executed
+          path: _build/html
+          retention-days: 14
+
+  # No deploy step yet: the publishing target (ReadTheDocs vs GitHub Pages) is undecided.
+  # Add it here once that call is made.

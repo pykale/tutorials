@@ -1,0 +1,53 @@
+schema_version: 1
+
+title: Multi-source domain adaptation on Office
+slug: office_multisource_adaptation
+summary: >-
+  Adapt from three labelled source domains to one unlabelled target using moment matching (M3SDA)
+  and multiple feature-space alignment (MFSAN), on Office-Caltech and digits.
+
+domain: others
+task: image classification
+
+modality:
+  - image
+method:
+  - M3SDA
+  - MFSAN
+fusion: none
+difficulty: intermediate
+
+dataset:
+  - name: Office-Caltech
+    url: https://github.com/pykale/data/tree/main/images/office
+    size: 100 MB
+    auto_download: true
+  - name: Office-31
+    url: https://github.com/pykale/data/tree/main/images/office
+    size: 90 MB
+    auto_download: true
+  - name: Digits (MNIST, MNIST-M, USPS, SVHN)
+    url: https://github.com/pykale/data
+    auto_download: true
+
+kale_api:
+  - kale.embed.image_cnn
+  - kale.loaddata.image_access
+  - kale.loaddata.multi_domain
+  - kale.pipeline.multi_domain_adapter
+  - kale.predict.class_domain_nets
+
+source_example: office_multisource_adapt
+entry_point: main.py
+run_command: python main.py --cfg configs/Office2A-M3SDA.yaml --devices 1
+
+hardware: gpu_optional
+estimated_runtime: ~30 min on one GPU
+
+colab: true
+binder: false
+draft: true
+
+references:
+  - https://openaccess.thecvf.com/content_ICCV_2019/html/Peng_Moment_Matching_for_Multi-Source_Domain_Adaptation_ICCV_2019_paper.html
+  - https://ojs.aaai.org/index.php/AAAI/article/view/4551

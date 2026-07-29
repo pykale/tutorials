@@ -1,0 +1,41 @@
+schema_version: 1
+
+title: Efficient video data loading
+slug: video_data_loading
+summary: >-
+  Load, sample and augment video datasets with VideoFrameDataset. Sparse temporal sampling keeps
+  memory flat regardless of clip length, and the loader plugs straight into torch DataLoader.
+
+domain: others
+task: data loading
+
+modality:
+  - video
+method:
+  - Sparse temporal sampling
+fusion: none
+difficulty: beginner
+
+dataset:
+  - name: Demo frame dataset (dummy, two classes)
+    auto_download: true
+    size: 2 MB
+
+kale_api:
+  - kale.loaddata.videos
+  - kale.prepdata.video_transform
+
+source_example: video_loading
+entry_point: main.py
+run_command: python main.py
+
+hardware: cpu
+estimated_runtime: <1 min on CPU
+
+colab: true
+binder: true
+draft: true
+
+references:
+  - https://arxiv.org/abs/1608.00859
+  - https://github.com/yjxiong/tsn-pytorch

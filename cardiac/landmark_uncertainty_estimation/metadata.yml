@@ -1,0 +1,51 @@
+schema_version: 1
+
+title: Uncertainty estimation for landmark localisation
+slug: landmark_uncertainty_estimation
+summary: >-
+  Quantile Binning sorts landmark predictions into bins of increasing uncertainty with estimated
+  error bounds, so the least reliable predictions can be filtered out before they are acted on.
+
+domain: cardiac
+task: uncertainty estimation
+
+modality:
+  - tabular
+method:
+  - Quantile Binning
+  - S-MHA
+  - E-MHA
+  - E-CPV
+fusion: none
+difficulty: intermediate
+
+dataset:
+  - name: Short-axis CMR landmarks (303 images, 3 landmarks)
+    url: https://github.com/pykale/data/tree/main/tabular/cardiac_landmark_uncertainty
+    auto_download: true
+  - name: Four-chamber CMR landmarks (422 images, 3 landmarks)
+    url: https://github.com/pykale/data/tree/main/tabular/cardiac_landmark_uncertainty
+    auto_download: true
+  - name: Cephalometric radiographs (400 images, 19 landmarks)
+    url: https://github.com/pykale/data/tree/main/tabular/cardiac_landmark_uncertainty
+    auto_download: true
+
+kale_api:
+  - kale.embed.uncertainty_fitting
+  - kale.interpret.uncertainty_quantiles
+  - kale.utils.download
+
+source_example: landmark_uncertainty
+entry_point: main.py
+run_command: python main.py --cfg configs/SA_data.yaml
+
+hardware: cpu
+estimated_runtime: ~5 min on CPU
+
+colab: true
+binder: true
+draft: true
+
+references:
+  - https://arxiv.org/abs/2203.02351
+  - https://github.com/Schobs/Qbin

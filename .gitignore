@@ -1,0 +1,51 @@
+# Sphinx / sphinx-gallery
+_build/
+_gallery/
+_pages/
+sg_execution_times.rst
+*.ipynb_checkpoints/
+
+# Datasets and run artefacts. Data lives at https://github.com/pykale/data, never here.
+data/
+datasets/
+outputs/
+lightning_logs/
+*.ckpt
+*.pth
+*.pt
+*.zip
+*.tar
+*.tar.gz
+*.npz
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# Tooling
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Generated tutorial thumbnails (deterministic, rebuilt by scripts/generate_thumbnails.py)
+_static/thumbnails/
+
+# Generated homepage partials
+_generated/
+_static/tutorials.json
+# copied at setup from _shared/assets/logos
+_static/pykale_logo.png

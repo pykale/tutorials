@@ -1,0 +1,52 @@
+{#-
+  Restrained multi-column footer for PyKale Tutorials. Columns are curated (small, stable); domain
+  links are data-driven from the catalogue via pky_nav.
+-#}
+<div class="pky-footer">
+  <div class="pky-footer-cols">
+    <div class="pky-footer-col">
+      <h3>Learn</h3>
+      <ul>
+        <li><a href="{{ pathto('getting-started') }}">Getting started</a></li>
+        <li><a href="{{ pathto('all-tutorials') }}">All tutorials</a></li>
+        <li><a href="{{ pathto('learning-paths') }}">Learning paths</a></li>
+        <li><a href="{{ pathto('tutorial-status') }}">Tutorial status</a></li>
+      </ul>
+    </div>
+    <div class="pky-footer-col">
+      <h3>Domains</h3>
+      <ul>
+        {% for d in pky_nav.domains %}
+        <li><a href="{{ pathto(d.docname) }}">{{ d.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="pky-footer-col">
+      <h3>Ecosystem</h3>
+      <ul>
+        {% for e in pky_nav.ecosystem %}
+        <li>{% if e.url %}<a href="{{ e.url }}" target="_blank" rel="noopener">{{ e.name }}</a>{% else %}<span>{{ e.name }}</span>{% endif %}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="pky-footer-col">
+      <h3>Project</h3>
+      <ul>
+        <li><a href="{{ pathto('CONTRIBUTING') }}">Contributing</a></li>
+        <li><a href="https://github.com/pykale/pykale" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://pykale.github.io/" target="_blank" rel="noopener">PyKale main site</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="pky-footer-base">
+    <span>© {{ pky_nav.year }} PyKale Contributors · MIT licence</span>
+    <span class="pky-google-search">
+      {#- Optional Google-backed site search. Local Sphinx search stays the default (navbar). This
+          opens Google scoped to the published site; the domain comes from html_context, not JS. -#}
+      <a href="https://www.google.com/search?q=site:{{ google_site_domain }}" target="_blank"
+         rel="noopener" aria-label="Search this site with Google (opens in a new tab)">
+        Search this site with Google<span class="pky-ext" aria-hidden="true"> ↗</span></a>
+    </span>
+    <span>Built with Sphinx &amp; PyData Sphinx Theme</span>
+  </div>
+</div>

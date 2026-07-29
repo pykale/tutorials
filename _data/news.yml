@@ -1,0 +1,33 @@
+# Curated "What's New" announcements for the homepage.
+# Newest first. `badge` is one of: New, Updated, Planned. `link` and `link_text` are optional.
+# Rendered by scripts/generate_homepage.py -- do not hand-edit the generated _generated/news.rst.
+
+- title: Domain-based tutorial structure
+  date: 2026-07-24
+  badge: New
+  summary: >-
+    Tutorials are now organised by the domain that owns them -- Protein, Cancer, Cardiac, Materials
+    and Others -- each with its own page and colour.
+
+- title: Executable Sphinx-Gallery tutorials
+  date: 2026-07-24
+  badge: New
+  summary: >-
+    Every tutorial is a runnable script. The narrated version builds into a notebook and a
+    downloadable Python file, and CPU-runnable tutorials are executed nightly in CI.
+
+- title: Reference tutorial available
+  date: 2026-07-24
+  badge: Updated
+  summary: >-
+    Domain adaptation on digit images is fully written -- the recommended starting point for
+    transfer learning with PyKale.
+  link: _pages/others
+  link_text: Read it
+
+- title: Materials domain
+  date: 2026-07-24
+  badge: Planned
+  summary: >-
+    A Materials domain is reserved for structure/property prediction and crystal descriptors.
+    Tutorials are in development.

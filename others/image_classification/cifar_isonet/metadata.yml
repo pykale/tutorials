@@ -1,0 +1,46 @@
+schema_version: 1
+
+title: CIFAR classification with ISONet
+slug: cifar_isonet
+summary: >-
+  Deep isometric learning on CIFAR-10/100. ISONet trains very deep networks without residual
+  connections or batch normalisation by keeping the layer-wise transform close to an isometry.
+
+domain: others
+task: image classification
+
+modality:
+  - image
+method:
+  - ISONet
+fusion: none
+difficulty: intermediate
+
+dataset:
+  - name: CIFAR-10
+    url: https://www.cs.toronto.edu/~kriz/cifar.html
+    size: 170 MB
+    auto_download: true
+  - name: CIFAR-100
+    url: https://www.cs.toronto.edu/~kriz/cifar.html
+    size: 169 MB
+    auto_download: true
+
+kale_api:
+  - kale.loaddata.image_access
+  - kale.predict.isonet
+
+source_example: cifar_isonet
+entry_point: main.py
+run_command: python main.py --cfg configs/CF10-ISO38.yaml --output CF10-ISO38
+
+hardware: gpu_optional
+estimated_runtime: ~2 h on one GPU
+
+colab: true
+binder: false
+draft: true
+
+references:
+  - http://proceedings.mlr.press/v119/qi20a.html
+  - https://github.com/HaozhiQi/ISONet

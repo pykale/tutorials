@@ -1,0 +1,54 @@
+schema_version: 1
+
+title: Domain adaptation for action recognition
+slug: action_recognition
+summary: >-
+  Transfer an action recogniser between egocentric video domains. Same adversarial adaptation
+  pipeline as the digits tutorial, with a 3D-CNN feature extractor and video data loaders.
+
+domain: others
+task: action recognition
+
+modality:
+  - video
+method:
+  - DANN
+  - CDAN
+  - DAN
+  - I3D
+  - R3D
+fusion: none
+difficulty: advanced
+
+dataset:
+  - name: EPIC-Kitchens (D1, D2, D3)
+    url: https://epic-kitchens.github.io/
+    auto_download: false
+  - name: ADL (P4, P6, P11)
+    auto_download: false
+  - name: GTEA
+    auto_download: false
+  - name: KITCHEN
+    auto_download: false
+
+kale_api:
+  - kale.embed.video.feature_extractor
+  - kale.loaddata.video_access
+  - kale.loaddata.video_multi_domain
+  - kale.pipeline.domain_adapter
+  - kale.pipeline.video_domain_adapter
+  - kale.predict.class_domain_nets
+
+source_example: action_dann
+entry_point: main.py
+run_command: python main.py --cfg configs/EPIC-D12D2-DANN.yaml --devices 1
+
+hardware: gpu_required
+estimated_runtime: several hours on one GPU
+
+colab: false
+binder: false
+draft: true
+
+references:
+  - https://github.com/criteo-research/pytorch-ada

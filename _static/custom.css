@@ -1,0 +1,487 @@
+/* =============================================================================
+   PyKale Tutorials — brand + platform styling over pydata-sphinx-theme.
+   ========================================================================== */
+
+/* ---- Design tokens ------------------------------------------------------- */
+:root {
+  --pykale-green-950: #0d3323;
+  --pykale-green-900: #14472f;
+  --pykale-green-700: #1b7a4f;
+  --pykale-green-500: #2e9e6b;
+  --pykale-green-100: #e5f3ec;
+  --pykale-ink: #1f2a26;
+  --pykale-muted: #5c6b64;
+  --pykale-surface: #ffffff;
+  --pykale-surface-2: #f6faf8;
+  --pykale-border: #e2e8e5;
+  --pykale-radius: 0.7rem;
+  --pykale-shadow: 0 6px 20px rgba(20, 71, 47, 0.10);
+  --pykale-focus: #2e9e6b;
+  --pst-font-size-base: 16px;
+}
+
+/* Map PyKale green onto every theme colour so NO purple/blue accent survives. pydata scopes its
+   colour tokens under html[data-theme=…] / html:not([data-theme]), which outrank :root -- so the
+   overrides must live at the same specificity, not in :root. */
+html[data-theme="light"],
+html:not([data-theme]) {
+  --pst-color-primary: var(--pykale-green-900);
+  --pst-color-primary-highlight: var(--pykale-green-950);
+  --pst-color-primary-bg: var(--pykale-green-100);
+  --pst-color-secondary: var(--pykale-green-700);
+  --pst-color-secondary-highlight: var(--pykale-green-900);
+  --pst-color-secondary-bg: var(--pykale-green-100);
+  --pst-color-accent: var(--pykale-green-700);
+  --pst-color-accent-bg: var(--pykale-green-100);
+  --pst-color-link: var(--pykale-green-700);
+  --pst-color-link-hover: var(--pykale-green-900);
+  --pst-color-inline-code: var(--pykale-green-900);
+  --sd-color-primary: var(--pykale-green-900);
+  --sd-color-secondary: var(--pykale-green-700);
+}
+
+html[data-theme="dark"] {
+  --pykale-ink: #e7efeb;
+  --pykale-muted: #9db0a8;
+  --pykale-surface: #10201a;
+  --pykale-surface-2: #16281f;
+  --pykale-border: #2b3a33;
+  --pykale-focus: #6ee7b0;
+  --pst-color-primary: #4cc38a;
+  --pst-color-primary-highlight: #6ad9a3;
+  --pst-color-primary-bg: #123024;
+  --pst-color-secondary: #5fd39b;
+  --pst-color-secondary-highlight: #83e2b5;
+  --pst-color-secondary-bg: #123024;
+  --pst-color-accent: #5fd39b;
+  --pst-color-link: #6ee7b0;
+  --pst-color-link-hover: #a7f3d0;
+  --sd-color-primary: #4cc38a;
+  --sd-color-secondary: #5fd39b;
+}
+
+/* ---- Three-column geometry: wide centre, compact utility rails ----------- */
+/* pydata caps content at 88rem (1408px) and gives the secondary sidebar 17rem (272px), which
+   starves the centre on wide screens. Widen the container and slim both rails so the tutorial
+   area dominates. */
+:root { --pst-sidebar-secondary: 13.5rem; } /* ~216px right rail */
+@media (min-width: 960px) {
+  .bd-page-width { max-width: 1880px; width: calc(100% - 2rem); }
+  .bd-sidebar-primary { flex: 0 0 12.5rem; width: 12.5rem; } /* ~200px left rail */
+  /* THE key whitespace fix: pydata caps the article at 60em (960px) inside a ~1400px main region via
+     `.bd-main .bd-content .bd-article-container`, leaving a large dead strip before the right rail.
+     Match that specificity to release the width; prose is kept readable separately below. */
+  .bd-main .bd-content .bd-article-container { max-width: none; }
+}
+/* Tutorial and domain content uses the full width of the (now wide) article column on desktop --
+   no reading-width cap, so new content added to a page fills the page. The homepage keeps its own
+   narrower cap on curated intro paragraphs (see the body.pky-landing rule below). */
+/* Compact rails: smaller headings, tighter spacing, subtle separation. */
+.bd-sidebar-primary { padding: 1.4rem 0.9rem 1rem; gap: 0.6rem; font-size: 0.86rem; }
+.bd-sidebar-primary .bd-navbar-elements, .bd-sidebar-primary nav { font-size: 0.86rem; }
+.bd-sidebar-secondary { padding: 1.4rem 0.9rem 1rem; }
+.sidebar-primary-item { padding: 0.2rem 0.4rem; }
+.bd-sidebar-primary a.current, .bd-sidebar-primary a:hover { color: var(--pst-color-primary); }
+.bd-sidebar-primary a.current { font-weight: 700; border-left: 2px solid var(--pst-color-primary); }
+/* Long nav entries: clamp to two lines, keep full text as a tooltip via title attr. */
+.bd-sidebar-primary .toctree-l1 > a, .bd-sidebar-primary .reference {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* Per-domain accent (colours mirror tutorial_catalog.yml). */
+.pky-others  { --pky-accent: #2563eb; }
+.pky-protein { --pky-accent: #0f766e; }
+.pky-cancer  { --pky-accent: #7c3aed; }
+.pky-cardiac { --pky-accent: #dc2626; }
+.pky-materials { --pky-accent: #ea580c; }
+
+/* Kill the theme's purple focus/selection outline; use a green ring everywhere. */
+*:focus-visible {
+  outline: 3px solid var(--pykale-focus) !important;
+  outline-offset: 2px;
+}
+::selection { background: var(--pykale-green-100); color: var(--pykale-green-950); }
+:root { accent-color: var(--pst-color-primary); }
+
+/* ---- Navbar: version, dropdowns, external action, icons ------------------ */
+.navbar-brand img { max-height: 2.4rem; }
+
+.pky-version {
+  display: inline-flex; align-items: center; margin: 0 0.2rem 0 0.4rem; padding: 0.1rem 0.5rem;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.02em; text-decoration: none;
+  color: var(--pykale-muted); background: var(--pykale-surface-2);
+  border: 1px solid var(--pykale-border); border-radius: 0.5rem;
+}
+.pky-version:hover { color: var(--pst-color-primary); border-color: var(--pst-color-secondary); }
+
+.pky-navbar .navbar-nav { flex-direction: row; align-items: center; gap: 0.15rem; }
+/* Top-level triggers use a subtle bottom indicator (inset box-shadow, since the theme zeroes the
+   border), never a full rectangular border/outline. High specificity to beat the theme's nav-link. */
+.bd-header .pky-dropdown .nav-link.dropdown-toggle {
+  background: none; border: 0; border-radius: 0; box-shadow: inset 0 -2px 0 transparent; font: inherit;
+  color: var(--pst-color-text-muted); padding: 0.4rem 0.6rem 0.35rem; cursor: pointer;
+  transition: color 0.12s ease, box-shadow 0.12s ease;
+}
+.bd-header .pky-dropdown .nav-link.dropdown-toggle:hover,
+.bd-header .pky-dropdown.show .nav-link.dropdown-toggle,
+.bd-header .pky-dropdown .nav-link.dropdown-toggle[aria-expanded="true"] {
+  color: var(--pst-color-primary) !important; box-shadow: inset 0 -2px 0 var(--pst-color-primary); background: none;
+}
+/* Plain :focus (mouse click / open) must not show Bootstrap's full rectangular ring -- only the
+   bottom line. Keyboard :focus-visible adds a subtle green ring for accessibility. Neither uses a
+   4-sided border/outline. */
+.bd-header .pky-dropdown .nav-link.dropdown-toggle:focus {
+  outline: none !important; box-shadow: inset 0 -2px 0 var(--pst-color-primary) !important;
+}
+.bd-header .pky-dropdown .nav-link.dropdown-toggle:focus-visible {
+  outline: none !important; color: var(--pst-color-primary) !important;
+  box-shadow: inset 0 -2px 0 var(--pst-color-primary), 0 0 0 2px var(--pst-color-secondary-bg) !important;
+}
+.pky-dropdown .dropdown-menu {
+  border: 1px solid var(--pykale-border); border-radius: var(--pykale-radius);
+  box-shadow: var(--pykale-shadow); padding: 0.4rem; min-width: 15rem;
+}
+.pky-dropdown .dropdown-item { border-radius: 0.4rem; padding: 0.4rem 0.6rem; }
+.pky-dropdown .dropdown-item:hover,
+.pky-dropdown .dropdown-item:focus { background: var(--pykale-green-100); color: var(--pykale-green-950); }
+html[data-theme="dark"] .pky-dropdown .dropdown-item:hover,
+html[data-theme="dark"] .pky-dropdown .dropdown-item:focus { background: #123024; color: #a7f3d0; }
+.pky-dot { display: inline-block; width: 0.6rem; height: 0.6rem; border-radius: 50%; margin-right: 0.5rem; }
+.pky-menu-badge {
+  float: right; font-size: 0.7rem; font-weight: 600; color: var(--pykale-muted);
+  background: var(--pykale-surface-2); border-radius: 0.5rem; padding: 0 0.4rem;
+}
+.pky-ext { opacity: 0.6; font-size: 0.85em; }
+
+.pky-goto {
+  display: inline-flex; align-items: center; gap: 0.3rem; margin-right: 0.5rem;
+  border: 1px solid var(--pst-color-secondary); border-radius: 0.5rem;
+  padding: 0.35rem 0.7rem; color: var(--pst-color-primary); font-weight: 600; text-decoration: none;
+}
+.pky-goto:hover { background: var(--pykale-green-100); color: var(--pykale-green-950); }
+html[data-theme="dark"] .pky-goto:hover { background: #123024; color: #a7f3d0; }
+.navbar-icon-links .nav-link img.icon-link-image,
+.navbar-icon-links .nav-link svg { width: 1.15rem; height: 1.15rem; }
+
+/* ---- Landing pages: same page width as every other page for consistency --- */
+/* NB: the previous full-viewport-width + negative-margin hero was the cause of the left-clipping;
+   it has been removed in favour of an in-flow hero at the container width. The container width is
+   the shared 1880px from the geometry block above -- no narrower landing-only cap. */
+body.pky-landing .bd-breadcrumbs { display: none; }
+/* Keep the real document-title h1 for a11y/SEO but let the hero be the visible headline. */
+body.pky-landing .bd-article > section > h1:first-child {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---- Hero (in-flow, spans the main content width) ------------------------ */
+.pky-hero {
+  margin: 0.5rem 0 2.2rem; border-radius: var(--pykale-radius); overflow: hidden;
+  background:
+    radial-gradient(900px 260px at 88% -30%, rgba(46, 158, 107, 0.18), transparent 60%),
+    linear-gradient(180deg, var(--pykale-surface-2), var(--pykale-surface));
+  border: 1px solid var(--pykale-border);
+}
+.pky-hero-inner {
+  display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 1.5rem; align-items: center;
+  padding: 2.4rem 2.6rem; min-height: 320px;
+}
+.pky-eyebrow {
+  text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.8rem; font-weight: 700;
+  color: var(--pykale-green-700); margin: 0 0 0.5rem;
+}
+.pky-hero-title { font-size: 2.8rem; font-weight: 800; line-height: 1.08; margin: 0 0 0.8rem; color: var(--pykale-ink); }
+.pky-hero-lead { font-size: 1.15rem; line-height: 1.5; color: var(--pykale-muted); max-width: 36rem; margin: 0 0 1.4rem; }
+.pky-hero-cta { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.pky-hero-art { color: var(--pykale-green-500); justify-self: center; width: 100%; max-width: 280px; }
+.pky-hero-art svg { width: 100%; height: auto; }
+
+.pky-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600;
+  padding: 0.55rem 1.05rem; border-radius: 0.55rem; text-decoration: none; border: 1px solid transparent;
+  transition: transform 0.1s ease, background 0.1s ease;
+}
+.pky-btn-sm { padding: 0.3rem 0.7rem; font-size: 0.85rem; }
+.pky-btn-primary { background: var(--pst-color-primary); color: #fff; }
+.pky-btn-primary:hover { background: var(--pst-color-primary-highlight); color: #fff; transform: translateY(-1px); }
+html[data-theme="dark"] .pky-btn-primary { color: #06231a; }
+.pky-btn-ghost { border-color: var(--pykale-border); color: var(--pst-color-primary); background: var(--pykale-surface); }
+.pky-btn-ghost:hover { border-color: var(--pst-color-secondary); background: var(--pykale-green-100); transform: translateY(-1px); }
+html[data-theme="dark"] .pky-btn-ghost:hover { background: #123024; }
+
+/* ---- Homepage right sidebar --------------------------------------------- */
+.pky-side-sec { margin-bottom: 1.6rem; }
+.pky-side-title {
+  font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pykale-muted);
+  margin: 0 0 0.5rem;
+}
+.pky-side-list { list-style: none; padding: 0; margin: 0; }
+.pky-side-list li { margin: 0.25rem 0; }
+.pky-side-list a { color: var(--pst-color-link); text-decoration: none; font-size: 0.9rem; }
+.pky-side-list a:hover { text-decoration: underline; }
+.pky-onthispage a[aria-current="true"] { font-weight: 700; color: var(--pst-color-primary); }
+
+/* ---- Feedback component -------------------------------------------------- */
+.pky-feedback .pky-fb-q { font-size: 0.9rem; font-weight: 600; margin: 0 0 0.5rem; color: var(--pykale-ink); }
+.pky-feedback .pky-fb-rate { display: flex; gap: 0.4rem; margin-bottom: 0.5rem; }
+.pky-feedback .pky-fb-thanks { font-size: 0.85rem; color: var(--pst-color-primary); margin: 0.3rem 0; }
+.pky-feedback .pky-fb-links { margin: 0.2rem 0; }
+.pky-feedback .pky-fb-links a { font-size: 0.88rem; color: var(--pst-color-link); text-decoration: none; }
+.pky-feedback .pky-fb-links a:hover { text-decoration: underline; }
+.pky-feedback .pky-fb-emphasis { font-weight: 700; }
+
+/* ---- Section rhythm + reading widths ------------------------------------ */
+body.pky-landing .bd-content h2 {
+  font-size: 1.6rem; margin: 3rem 0 1rem; padding-top: 0; color: var(--pykale-ink); border: 0;
+}
+body.pky-landing .bd-content > section > section:first-of-type > h2 { margin-top: 1.5rem; }
+body.pky-landing .bd-content > section p { color: var(--pykale-muted); max-width: 54rem; }
+
+/* ---- sphinx-design cards (shared) --------------------------------------- */
+.bd-content .sd-card {
+  border: 1px solid var(--pykale-border); border-radius: var(--pykale-radius);
+  background: var(--pykale-surface); overflow: hidden;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+}
+.bd-content .sd-card:hover { transform: translateY(-3px); box-shadow: var(--pykale-shadow); }
+.bd-content .sd-card-title { font-weight: 700; }
+.bd-content a.sd-card:hover .sd-card-title { color: var(--pst-color-primary); }
+
+.pky-domain-card { border-top: 3px solid var(--pky-accent, var(--pst-color-primary)); }
+.pky-domain-card .sd-card-img-top { width: 100%; height: auto; display: block; }
+.pky-domain-card .sd-card-title { color: var(--pky-accent, var(--pst-color-primary)); }
+.pky-domain-card:hover { border-color: var(--pky-accent); }
+
+.pky-news-card, .pky-path-card, .pky-eco-card { border-left: 3px solid var(--pst-color-secondary); }
+
+/* Bucket-page card grid: override sphinx-design's fixed bootstrap row with a CSS grid whose column
+   count is fixed per page (pky-cols-N, N = min(tutorial count, 4)). Fixed 1fr columns mean the cards
+   in a full domain stretch to fill the row (no right whitespace), while a domain with one or two
+   tutorials is capped by max-width so a lone card does not balloon across the whole container. */
+.pky-domain-grid .sd-row {
+  display: grid !important; gap: 0.9rem; margin: 0 !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.pky-domain-grid.pky-cols-1 .sd-row { grid-template-columns: minmax(0, 1fr); max-width: 24rem; }
+.pky-domain-grid.pky-cols-2 .sd-row { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 48rem; }
+@media (min-width: 1000px) {
+  .pky-domain-grid.pky-cols-3 .sd-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .pky-domain-grid.pky-cols-4 .sd-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1320px) {
+  .pky-domain-grid.pky-cols-4 .sd-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+.pky-domain-grid .sd-col {
+  width: auto !important; max-width: none !important; flex: none !important;
+  margin: 0 !important; padding: 0 !important;
+}
+
+.pky-tut-card { border-top: 3px solid var(--pky-accent, var(--pst-color-primary)); }
+.pky-tut-card .sd-card-img-top { width: 100%; height: auto; display: block; border-bottom: 1px solid var(--pykale-border); }
+.pky-tut-card .sd-card-title { font-size: 1.02rem; }
+.pky-domain-lead { font-size: 1.1rem; color: var(--pykale-muted); max-width: 48rem; }
+.pky-domain-lead strong { color: var(--pykale-ink); }
+
+.sd-badge { border-radius: 0.5rem; font-weight: 600; }
+
+/* News badges — a distinct branded colour per type (New green, Updated blue, Planned amber),
+   overriding sphinx-design's default palette. Filled roles render as .sd-bg-<name>. */
+.pky-news .sd-badge { text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.7rem; padding: 0.15rem 0.5rem; }
+.pky-news .sd-bg-success { background-color: #1b7a4f !important; color: #ffffff !important; }
+.pky-news .sd-bg-info { background-color: #2563eb !important; color: #ffffff !important; }
+.pky-news .sd-bg-warning { background-color: #d97706 !important; color: #ffffff !important; }
+.pky-news .sd-bg-secondary { background-color: var(--pykale-muted) !important; color: #ffffff !important; }
+html[data-theme="dark"] .pky-news .sd-bg-success { background-color: #34a873 !important; color: #06231a !important; }
+html[data-theme="dark"] .pky-news .sd-bg-info { background-color: #60a5fa !important; color: #06231a !important; }
+html[data-theme="dark"] .pky-news .sd-bg-warning { background-color: #f59e0b !important; color: #241a06 !important; }
+
+/* ---- Faceted catalogue (denser) ----------------------------------------- */
+.pky-catalog { margin-top: 0.5rem; }
+.pky-catalog-controls {
+  display: grid; grid-template-columns: 1fr auto; gap: 0.5rem 1rem; align-items: start;
+  padding: 0.8rem 1rem; background: var(--pykale-surface-2); border: 1px solid var(--pykale-border);
+  border-radius: var(--pykale-radius); position: sticky; top: 3.8rem; z-index: 5;
+}
+.pky-search { grid-row: 1; grid-column: 1; }
+.pky-search input {
+  width: 20rem; max-width: 100%; padding: 0.4rem 0.7rem; border-radius: 0.5rem;
+  border: 1px solid var(--pykale-border); background: var(--pykale-surface); color: var(--pykale-ink);
+}
+.pky-clear { grid-row: 1; grid-column: 2; justify-self: end; }
+.pky-facets { grid-row: 2; grid-column: 1 / -1; display: flex; flex-direction: column; gap: 0.3rem; }
+.pky-facet-group { display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: baseline; }
+.pky-facet-label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--pykale-muted); width: 5.5rem; flex: 0 0 5.5rem;
+}
+.pky-facet-chip {
+  font-size: 0.78rem; padding: 0.12rem 0.5rem; border-radius: 1rem; cursor: pointer;
+  border: 1px solid var(--pykale-border); background: var(--pykale-surface); color: var(--pykale-ink);
+}
+.pky-facet-chip:hover { border-color: var(--pst-color-secondary); }
+.pky-facet-chip[aria-pressed="true"] {
+  background: var(--pst-color-primary); color: #fff; border-color: var(--pst-color-primary);
+}
+html[data-theme="dark"] .pky-facet-chip[aria-pressed="true"] { color: #06231a; }
+.pky-count { font-size: 0.85rem; color: var(--pykale-muted); margin: 0.7rem 0 0.5rem; }
+.pky-empty { padding: 2rem; text-align: center; color: var(--pykale-muted); }
+
+/* Card grid: up to FIVE columns on very wide screens, stepping down so cards never get too narrow
+   (min useful ~205px). Five is a wide-screen maximum, not forced at every desktop size. */
+.pky-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.9rem; }
+@media (min-width: 1000px) { .pky-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1320px) { .pky-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 1600px) { .pky-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.pky-card {
+  display: flex; flex-direction: column; border: 1px solid var(--pykale-border);
+  border-radius: var(--pykale-radius); overflow: hidden; background: var(--pykale-surface);
+  color: inherit; text-decoration: none; transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.pky-card:hover { transform: translateY(-3px); box-shadow: var(--pykale-shadow); }
+/* 16:7-ish thumbnail so cards are shorter and more fit above the fold. */
+.pky-card-thumb { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; object-position: center top; display: block; border-bottom: 1px solid var(--pykale-border); }
+.pky-card-body { padding: 0.7rem 0.85rem 0.85rem; display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
+.pky-card-badges { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.pky-chip { font-size: 0.7rem; font-weight: 600; padding: 0.1rem 0.45rem; border-radius: 0.5rem; border: 1px solid var(--pykale-border); }
+.pky-chip-domain { color: var(--pykale-ink); }
+.pky-chip-draft { color: #92600b; background: #fff7e6; border-color: #f0d9a8; }
+html[data-theme="dark"] .pky-chip-draft { color: #f0c675; background: #2c220c; border-color: #4a3a12; }
+.pky-chip-written { color: var(--pykale-green-900); background: var(--pykale-green-100); border-color: transparent; }
+html[data-theme="dark"] .pky-chip-written { color: #a7f3d0; background: #123024; }
+.pky-card-title { font-size: 0.98rem; font-weight: 700; margin: 0; color: var(--pykale-ink); line-height: 1.25; }
+/* Clamp summary to a consistent height so metadata footers align. */
+.pky-card-summary {
+  font-size: 0.82rem; line-height: 1.4; color: var(--pykale-muted); margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.pky-card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: auto; }
+.pky-tag { font-size: 0.68rem; color: var(--pykale-muted); background: var(--pykale-surface-2); border-radius: 0.4rem; padding: 0.08rem 0.4rem; }
+.pky-card-meta { display: flex; flex-wrap: wrap; gap: 0.7rem; font-size: 0.74rem; color: var(--pykale-muted); padding-top: 0.35rem; border-top: 1px solid var(--pykale-border); }
+
+/* ---- Tutorial action toolbar --------------------------------------------- */
+.pky-actions {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.4rem 0 1.4rem;
+  padding-bottom: 1rem; border-bottom: 1px solid var(--pykale-border);
+}
+.pky-action { font-size: 0.9rem; padding: 0.45rem 0.9rem; display: inline-flex; align-items: center; gap: 0.4rem; }
+.pky-action-ico { font-size: 0.9em; }
+.pky-colab-ico { flex: 0 0 auto; vertical-align: middle; }
+.pky-disabled .pky-colab-ico { opacity: 0.7; }
+.pky-disabled {
+  opacity: 0.55; cursor: not-allowed; background: var(--pykale-surface-2);
+  color: var(--pykale-muted); border-color: var(--pykale-border);
+}
+.pky-btn-primary.pky-disabled { background: var(--pykale-surface-2); color: var(--pykale-muted); }
+.pky-disabled:hover { transform: none; }
+
+/* ---- Navbar search field: a real, directly-typeable input ---------------- */
+.navbar-header-items .bd-search, header .bd-search {
+  position: relative; align-items: center; gap: 0.4rem;
+  border: 1px solid var(--pykale-border); border-radius: 1.4rem; background: var(--pykale-surface);
+  padding: 0.15rem 0.7rem; width: 17rem; max-width: 100%;
+}
+.navbar-header-items .bd-search:focus-within, header .bd-search:focus-within {
+  border-color: var(--pst-color-secondary); box-shadow: 0 0 0 2px var(--pst-color-secondary-bg);
+}
+.navbar-header-items .bd-search .fa-magnifying-glass { color: var(--pykale-muted); }
+.navbar-header-items .bd-search input, header .bd-search input {
+  border: 0; background: transparent; box-shadow: none; padding: 0.3rem 0.2rem; color: var(--pykale-ink);
+  flex: 1; min-width: 0;
+}
+.navbar-header-items .bd-search input:focus { outline: none; box-shadow: none; }
+.bd-search .search-button__kbd-shortcut, .bd-search kbd {
+  border: 1px solid var(--pykale-border); border-radius: 0.35rem; color: var(--pykale-muted);
+  background: var(--pykale-surface-2);
+}
+.pky-google-search { font-size: 0.85rem; }
+.pky-google-search a { color: var(--pst-color-link); text-decoration: none; }
+.pky-google-search a:hover { text-decoration: underline; }
+/* Desktop shows the typeable field; hide the modal search-button. */
+@media (min-width: 961px) {
+  .navbar-header-items .search-button, header .search-button { display: none; }
+}
+/* Below desktop, hide the wide field and show the theme's search-button (icon -> dialog). */
+@media (max-width: 960px) {
+  .navbar-header-items .bd-search, header .bd-search { display: none; }
+}
+
+/* ---- Left-sidebar context label ------------------------------------------ */
+.pky-sidebar-context {
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.02em; color: var(--pykale-muted);
+  margin: -0.2rem 0 0.6rem; padding-left: 0.1rem;
+}
+
+/* ---- Tighter vertical rhythm on bucket + tutorial pages ------------------ */
+.bd-article > section > h1:first-child { margin-top: 0.6rem; }
+.bd-article .pky-domain-lead { margin: 0.4rem 0 1.2rem; }
+.bd-article .admonition { margin-top: 1rem; }
+/* Sphinx-gallery "Go to the end…" note is redundant now the toolbar offers downloads: hide it. */
+.bd-article .sphx-glr-download-link-note { display: none; }
+/* Draft tutorials ship only a stub notebook -- hide the .ipynb/.py/.zip download block so we do not
+   offer an incomplete download. (Written tutorials keep their downloads.) */
+body.pky-draft-tutorial .sphx-glr-footer { display: none; }
+
+/* ---- Footer -------------------------------------------------------------- */
+.pky-footer-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 1.2rem; text-align: left; }
+.pky-footer-col h3 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--pykale-muted); margin: 0 0 0.6rem; }
+.pky-footer-col ul { list-style: none; padding: 0; margin: 0; }
+.pky-footer-col li { margin: 0.3rem 0; }
+.pky-footer-col a { color: var(--pst-color-link); text-decoration: none; }
+.pky-footer-col a:hover { text-decoration: underline; }
+.pky-footer-col span { color: var(--pykale-muted); }
+.pky-footer-base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem; font-size: 0.82rem; color: var(--pykale-muted); border-top: 1px solid var(--pykale-border); padding-top: 0.9rem; }
+
+/* ---- sphinx-gallery thumbnails (leaf pages) ------------------------------ */
+.sphx-glr-thumbcontainer {
+  border-radius: var(--pykale-radius); border: 1px solid var(--pykale-border); box-shadow: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.sphx-glr-thumbcontainer:hover { transform: translateY(-2px); box-shadow: var(--pykale-shadow); border-color: var(--pst-color-secondary); }
+
+/* ---- Back-to-top: compact green circle with a visible arrow --------------- */
+/* The theme button already ships an fa-arrow-up SVG; show it (white) and hide only the text label. */
+#pst-back-to-top {
+  width: 46px; height: 46px; min-width: 0; max-width: 46px; padding: 0; overflow: hidden;
+  border-radius: 50%; font-size: 0; white-space: nowrap;
+  background: var(--pst-color-primary) !important; box-shadow: var(--pykale-shadow);
+  right: 1.25rem; bottom: 1.25rem; left: auto;
+  display: flex; align-items: center; justify-content: center;
+}
+#pst-back-to-top svg, #pst-back-to-top .fa-arrow-up {
+  display: inline-block; width: 1.15rem; height: 1.15rem; fill: #fff; color: #fff; font-size: 1.1rem;
+}
+html[data-theme="dark"] #pst-back-to-top svg { fill: #06231a; color: #06231a; }
+#pst-back-to-top:hover { background: var(--pst-color-primary-highlight) !important; }
+@media (max-width: 600px) { #pst-back-to-top { width: 40px; height: 40px; right: 0.9rem; bottom: 4.5rem; } }
+
+/* ---- Utilities ----------------------------------------------------------- */
+.pky-visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+  .pky-btn:hover, .pky-card:hover, .bd-content .sd-card:hover, .sphx-glr-thumbcontainer:hover { transform: none; }
+}
+
+/* ---- Responsive ---------------------------------------------------------- */
+@media (max-width: 1200px) {
+  .pky-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 1024px) {
+  .pky-hero-inner { grid-template-columns: 1fr; min-height: 0; padding: 2rem; }
+  .pky-hero-art { display: none; }
+  .pky-footer-cols { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .pky-hero-title { font-size: 2.1rem; }
+  .pky-catalog-controls { position: static; grid-template-columns: 1fr; }
+  .pky-clear { grid-row: auto; grid-column: 1; justify-self: start; }
+  .pky-facet-label { width: auto; flex-basis: 100%; }
+}
+@media (max-width: 600px) {
+  .pky-grid { grid-template-columns: 1fr; }
+  .pky-hero-cta { flex-direction: column; align-items: stretch; }
+  .pky-btn { justify-content: center; }
+  .pky-footer-cols { grid-template-columns: 1fr 1fr; }
+}

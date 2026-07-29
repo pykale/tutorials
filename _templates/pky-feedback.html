@@ -1,0 +1,21 @@
+{#- Reusable feedback component. Appears in the homepage sidebar and (via secondary_sidebar_items)
+    on domain and tutorial pages. All behaviour is in _static/js/feedback.js; the GitHub issue URL is
+    built client-side with URLSearchParams from these data-* attributes. No backend, no analytics. -#}
+<div class="pky-side-sec pky-feedback" data-repo="{{ feedback_repo }}"
+     data-version="{{ pykale_version }}" aria-label="Page feedback">
+  <h3 class="pky-side-title">Feedback</h3>
+  <p class="pky-fb-q">Was this page helpful?</p>
+  <div class="pky-fb-rate">
+    <button type="button" class="pky-btn pky-btn-ghost pky-btn-sm pky-fb-yes">Yes</button>
+    <button type="button" class="pky-btn pky-btn-ghost pky-btn-sm pky-fb-no">Not really</button>
+  </div>
+  <p class="pky-fb-thanks" role="status" hidden>Thanks — that helps.</p>
+  <p class="pky-fb-links">
+    <a class="pky-fb-send" href="#" target="_blank" rel="noopener">
+      Send detailed feedback<span class="pky-ext" aria-hidden="true"> ↗</span></a>
+  </p>
+  <p class="pky-fb-links">
+    <a class="pky-fb-problem" href="#" target="_blank" rel="noopener">
+      Report a problem<span class="pky-ext" aria-hidden="true"> ↗</span></a>
+  </p>
+</div>

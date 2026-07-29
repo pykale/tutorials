@@ -1,0 +1,151 @@
+# Source of truth for the tutorial gallery.
+#
+# `conf.py`, `scripts/validate_catalog.py` and `scripts/export_landing_page.py` all read this file.
+# Adding a tutorial means adding a folder plus one line here -- no Sphinx config edit required.
+#
+# Decision rule (see README): the folder path fixes the owning domain and the task. Everything else
+# -- modality, method, fusion, dataset, difficulty -- lives in each tutorial's metadata.yml and
+# surfaces as a landing-page filter.
+
+version: 1
+
+buckets:
+  - id: protein
+    label: Protein
+    color: "#0f766e"
+    icon: molecule
+    status: active
+    examples:
+      - Drug-target affinity (DeepDTA)
+      - Polypharmacy side effects
+    summary: >-
+      Molecular therapeutics. Broader than protein-only work: drug-target binding and
+      polypharmacy side effects both live here.
+    tutorials:
+      - drug_target_affinity_prediction
+      - drug_target_interaction_prediction
+      - polypharmacy_side_effect_prediction
+
+  - id: cancer
+    label: Cancer
+    color: "#7c3aed"
+    icon: layers
+    status: active
+    examples:
+      - Multiomics integration (MOGONET)
+    summary: >-
+      Primary owner for cancer applications. Tutorials here may also be tagged for biomedical or
+      neurodegeneration use through their metadata.
+    tutorials:
+      - multiomics_cancer_classification
+
+  - id: cardiac
+    label: Cardiac
+    color: "#dc2626"
+    icon: pulse
+    status: active
+    examples:
+      - Cardiac MRI diagnosis
+      - Landmark uncertainty
+    summary: >-
+      Cardiac imaging and the uncertainty tooling that grew out of it. The quantile-binning method
+      is reusable across domains, but the cardiac tutorials remain its primary owner.
+    tutorials:
+      - cardiac_mri_diagnosis
+      - landmark_uncertainty_estimation
+
+  - id: materials
+    label: Materials
+    color: "#ea580c"
+    icon: lattice
+    status: coming_soon
+    examples:
+      - Structure/property prediction
+      - Crystal descriptors
+    summary: >-
+      Reserved. No PyKale example maps here yet -- earmarked for structure/property prediction,
+      crystal and material descriptors, and materials benchmark tasks.
+    tutorials: []
+
+  # Domain-agnostic method demos. Labelled "Others" to match the folder (others/) and listed last.
+  - id: others
+    label: Others
+    color: "#2563eb"
+    icon: nodes
+    status: active
+    examples:
+      - Domain adaptation on digits
+      - Few-shot image classification
+    summary: >-
+      Domain-agnostic method demonstrations: image and video recognition, domain adaptation,
+      few-shot learning and data loading. Start here if you are new to PyKale.
+    groups:
+      - id: image_classification
+        label: Image classification
+        tutorials:
+          - cifar_cnn_transformer
+          - cifar_isonet
+          - digit_domain_adaptation
+          - office_multisource_adaptation
+    tutorials:
+      - audio_visual_digit_classification
+      - action_recognition
+      - fewshot_image_classification
+      - multisite_neuroimaging_classification
+      - synthetic_domain_adaptation
+      - video_data_loading
+
+# Related projects, shown in the homepage ecosystem section. Entries without a `url` render as plain
+# text (never a dead link); UKOMAIN and OMAIB have no public tutorial URL yet, so they carry none.
+ecosystem:
+  - name: PyKale core
+    url: https://github.com/pykale/pykale
+    description: The library these tutorials are built on -- multimodal and transfer learning.
+  - name: PyKale data
+    url: https://github.com/pykale/data
+    description: Public datasets the tutorials download from.
+  - name: PyKale docs
+    url: https://pykale.readthedocs.io
+    description: API reference for every kale module a tutorial uses.
+  - name: UKOMAIN
+    description: UK Open Multimodal AI Network -- the community initiative behind this work.
+    planned: true
+  - name: OMAIB
+    description: Open Multimodal AI for Biomedicine -- biomedical applications of PyKale.
+    planned: true
+  - name: Domain packages
+    description: Planned kale-protein, kale-cancer, kale-cardiac and kale-materials extensions.
+    planned: true
+
+# Curated routes through the tutorials. Slugs are validated against the catalog by validate_catalog.
+learning_paths:
+  - id: new_to_pykale
+    title: New to PyKale
+    summary: Start here. The gentlest path from a first run to a working domain-adaptation model.
+    tutorials:
+      - synthetic_domain_adaptation
+      - digit_domain_adaptation
+      - video_data_loading
+  - id: transfer_and_domain_adaptation
+    title: Transfer & domain adaptation
+    summary: PyKale's core strength -- aligning models across shifting data distributions.
+    tutorials:
+      - digit_domain_adaptation
+      - office_multisource_adaptation
+      - action_recognition
+      - multisite_neuroimaging_classification
+  - id: multimodal_learning
+    title: Multimodal learning
+    summary: Combining modalities -- audio and image, graphs and sequences, multiomics.
+    tutorials:
+      - audio_visual_digit_classification
+      - drug_target_interaction_prediction
+      - multiomics_cancer_classification
+  - id: biomedical_ai
+    title: Biomedical AI
+    summary: Applications across protein, cancer and cardiac data.
+    tutorials:
+      - drug_target_affinity_prediction
+      - multiomics_cancer_classification
+      - cardiac_mri_diagnosis
+      - landmark_uncertainty_estimation

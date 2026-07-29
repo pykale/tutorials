@@ -1,0 +1,48 @@
+schema_version: 1
+
+title: Cardiac MRI diagnosis with multilinear PCA
+slug: cardiac_mri_diagnosis
+summary: >-
+  Diagnose pulmonary arterial hypertension from short-axis cardiac MRI. MPCA keeps the tensor
+  structure of the image stack intact, and the learned weights map back onto the anatomy.
+
+domain: cardiac
+task: diagnosis
+
+modality:
+  - image
+method:
+  - MPCA
+  - Linear SVM
+  - Kernel SVM
+  - Logistic regression
+fusion: none
+difficulty: intermediate
+
+dataset:
+  - name: ShefPAH-179 v2.0 (short-axis cardiac MRI)
+    url: https://github.com/pykale/data/tree/main/images/ShefPAH-179
+    size: 60 MB
+    auto_download: true
+
+kale_api:
+  - kale.interpret.model_weights
+  - kale.interpret.visualize
+  - kale.loaddata.image_access
+  - kale.pipeline.mpca_trainer
+  - kale.prepdata.image_transform
+  - kale.utils.download
+
+source_example: cmri_mpca
+entry_point: main.py
+run_command: python main.py --cfg configs/tutorial_svc.yaml
+
+hardware: cpu
+estimated_runtime: ~5 min on CPU
+
+colab: true
+binder: true
+draft: true
+
+references:
+  - https://academic.oup.com/ehjcimaging/article/22/2/236/5717931

@@ -1,0 +1,51 @@
+schema_version: 1
+
+title: Multiomics cancer classification with MOGONET
+slug: multiomics_cancer_classification
+summary: >-
+  Integrate mRNA expression, DNA methylation and miRNA expression with per-omics graph
+  convolutional networks, fusing their predictions through a view-correlation discovery network.
+
+domain: cancer
+task: classification
+
+modality:
+  - omics
+  - graph
+method:
+  - MOGONET
+  - Graph convolutional network
+  - VCDN
+fusion: late
+difficulty: advanced
+
+dataset:
+  - name: BRCA (breast cancer subtypes)
+    url: https://github.com/pykale/data/tree/main/multiomics
+    auto_download: true
+  - name: ROSMAP (Alzheimer's disease)
+    url: https://github.com/pykale/data/tree/main/multiomics
+    auto_download: true
+
+kale_api:
+  - kale.embed.model_lib.mogonet
+  - kale.interpret.model_weights
+  - kale.loaddata.multiomics_datasets
+  - kale.pipeline.multiomics_trainer
+  - kale.predict.decode
+  - kale.prepdata.tabular_transform
+
+source_example: multiomics_mogonet
+entry_point: main.py
+run_command: python main.py --cfg configs/MOGONET_BRCA_quick_test.yaml
+
+hardware: gpu_optional
+estimated_runtime: ~10 min on one GPU
+
+colab: true
+binder: true
+draft: true
+
+references:
+  - https://doi.org/10.1038/s41467-021-23774-w
+  - https://github.com/txWang/MOGONET

@@ -1,0 +1,44 @@
+schema_version: 1
+
+title: Multi-site neuroimaging classification
+slug: multisite_neuroimaging_classification
+summary: >-
+  Autism detection from resting-state fMRI pooled across four ABIDE acquisition sites, using
+  CoIRLS to regularise away site-driven covariate shift.
+
+domain: others
+task: classification
+
+modality:
+  - neuroimaging
+  - tabular
+method:
+  - CoIRLS
+  - Ridge classifier
+fusion: none
+difficulty: intermediate
+
+dataset:
+  - name: ABIDE I (NYU, UM_1, UCLA_1, USM; CC200 atlas, cpac pipeline)
+    url: https://fcon_1000.projects.nitrc.org/indi/abide/
+    size: 50 MB
+    auto_download: true
+
+kale_api:
+  - kale.evaluate.cross_validation
+  - kale.pipeline.multi_domain_adapter
+
+source_example: multisite_neuroimg_adapt
+entry_point: main.py
+run_command: python main.py --cfg configs/tutorial.yaml
+
+hardware: cpu
+estimated_runtime: ~5 min on CPU
+
+colab: true
+binder: true
+draft: true
+
+references:
+  - https://doi.org/10.3389/conf.fninf.2013.09.00041
+  - https://doi.org/10.1609/aaai.v34i04.6179

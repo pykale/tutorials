@@ -1,0 +1,50 @@
+schema_version: 1
+
+title: Few-shot image classification with ProtoNet
+slug: fewshot_image_classification
+summary: >-
+  Prototypical Networks under N-way K-shot settings. Learn an embedding where class prototypes are
+  the mean of their support samples, then classify query samples by distance to those prototypes.
+
+domain: others
+task: few-shot classification
+
+modality:
+  - image
+method:
+  - ProtoNet
+fusion: none
+difficulty: intermediate
+
+dataset:
+  - name: Omniglot
+    url: https://github.com/brendenlake/omniglot
+    size: 150 MB
+    auto_download: false
+  - name: mini-ImageNet
+    url: https://www.kaggle.com/datasets/arjunashok33/miniimagenet
+    auto_download: false
+  - name: tiered-ImageNet
+    url: https://www.kaggle.com/datasets/arjun2000ashok/tieredimagenet
+    auto_download: false
+
+kale_api:
+  - kale.embed.image_cnn
+  - kale.loaddata.few_shot
+  - kale.pipeline.fewshot_trainer
+  - kale.prepdata.image_transform
+
+source_example: fewshot_protonet
+entry_point: main.py
+run_command: python main.py --cfg configs/demo.yaml --gpus 1
+
+hardware: gpu_optional
+estimated_runtime: ~30 min on one GPU
+
+colab: true
+binder: false
+draft: true
+
+references:
+  - https://arxiv.org/abs/1703.05175
+  - https://github.com/jakesnell/prototypical-networks

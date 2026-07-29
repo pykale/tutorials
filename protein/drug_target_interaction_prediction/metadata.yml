@@ -1,0 +1,51 @@
+schema_version: 1
+
+title: Drug-target interaction prediction with DrugBAN
+slug: drug_target_interaction_prediction
+summary: >-
+  An interpretable bilinear attention network over drug molecular graphs and protein sequences,
+  with optional domain adaptation for cross-domain generalisation on BindingDB and BioSNAP.
+
+domain: protein
+task: interaction prediction
+
+modality:
+  - graph
+  - sequence
+method:
+  - DrugBAN
+  - Bilinear attention
+  - CDAN
+fusion: intermediate
+difficulty: advanced
+
+dataset:
+  - name: BindingDB (random and cluster splits)
+    url: https://github.com/pykale/data/blob/main/molecular/README.md
+    auto_download: false
+  - name: BioSNAP (random and cluster splits)
+    url: https://github.com/pykale/data/blob/main/molecular/README.md
+    auto_download: false
+
+kale_api:
+  - kale.embed.model_lib.drugban
+  - kale.interpret.visualize
+  - kale.loaddata.molecular_datasets
+  - kale.loaddata.sampler
+  - kale.pipeline.drugban_trainer
+  - kale.prepdata.tensor_reshape
+
+source_example: bindingdb_drugban
+entry_point: main.py
+run_command: python main.py --cfg configs/non_DA_in_domain.yaml
+
+hardware: gpu_optional
+estimated_runtime: ~2 h on one GPU
+
+colab: false
+binder: false
+draft: true
+
+references:
+  - https://www.nature.com/articles/s42256-022-00605-1
+  - https://github.com/peizhenbai/DrugBAN

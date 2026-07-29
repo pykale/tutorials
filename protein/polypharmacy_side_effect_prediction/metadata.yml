@@ -1,0 +1,43 @@
+schema_version: 1
+
+title: Polypharmacy side effect prediction with GripNet
+slug: polypharmacy_side_effect_prediction
+summary: >-
+  Link prediction on a protein-drug knowledge graph. GripNet propagates messages along a
+  task-specific path over a supergraph to predict side effects caused by drug combinations.
+
+domain: protein
+task: link prediction
+
+modality:
+  - graph
+method:
+  - GripNet
+fusion: graph
+difficulty: advanced
+
+dataset:
+  - name: PoSE (mini subset of the Decagon knowledge graph)
+    url: https://github.com/pykale/data/tree/main/graphs
+    size: 10 MB
+    auto_download: true
+
+kale_api:
+  - kale.loaddata.polypharmacy_datasets
+  - kale.predict.decode
+  - kale.prepdata.supergraph_construct
+
+source_example: polypharmacy_gripnet
+entry_point: main.py
+run_command: python main.py --cfg configs/PoSE_MINI-GripNet.yaml
+
+hardware: gpu_optional
+estimated_runtime: ~15 min on one GPU
+
+colab: true
+binder: false
+draft: true
+
+references:
+  - https://doi.org/10.1016/j.patcog.2022.108973
+  - https://academic.oup.com/bioinformatics/article/34/13/i457/5045770

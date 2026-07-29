@@ -1,0 +1,48 @@
+schema_version: 1
+
+title: Drug-target affinity prediction with DeepDTA
+slug: drug_target_affinity_prediction
+summary: >-
+  Predict binding affinity between compounds and protein targets by encoding SMILES strings and
+  amino-acid sequences with parallel CNNs, on three BindingDB subsets (Kd, IC50, Ki).
+
+domain: protein
+task: affinity prediction
+
+modality:
+  - sequence
+method:
+  - DeepDTA
+fusion: early
+difficulty: intermediate
+
+dataset:
+  - name: BindingDB Kd
+    url: https://tdcommons.ai/
+    auto_download: true
+  - name: BindingDB IC50
+    url: https://tdcommons.ai/
+    auto_download: true
+  - name: BindingDB Ki
+    url: https://tdcommons.ai/
+    auto_download: true
+
+kale_api:
+  - kale.embed.cnn
+  - kale.loaddata.tdc_datasets
+  - kale.pipeline.deepdta
+  - kale.predict.decode
+
+source_example: bindingdb_deepdta
+entry_point: main.py
+run_command: python main.py --cfg configs/Kd-DeepDTA.yaml
+
+hardware: gpu_optional
+estimated_runtime: ~1 h on one GPU
+
+colab: true
+binder: false
+draft: true
+
+references:
+  - https://academic.oup.com/bioinformatics/article/34/17/i821/5093245

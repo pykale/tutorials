@@ -1,0 +1,52 @@
+"""
+{{ TITLE }}
+{{ TITLE_UNDERLINE }}
+
+{{ ONE_PARAGRAPH: what problem this solves and why the method suits it. Write for someone who knows
+PyTorch but not this method. State the dataset and what "good" looks like before any code runs. }}
+
+.. note::
+   This tutorial is the narrated version of ``main.py`` in the same folder. To run the full
+   experiment instead of the reduced one below::
+
+       {{ RUN_COMMAND }}
+"""
+
+# %%
+# Setup
+# -----
+# {{ What is being imported and why. Keep the reduced configuration honest: say plainly that it is
+# reduced and by how much, so nobody reports the smaller numbers as the method's real performance. }}
+
+import torch
+
+from kale.utils.seed import set_seed
+
+set_seed(2020)
+
+# %%
+# Data
+# ----
+# {{ Where the data comes from, its shape, and the split. If it downloads, say how large it is. }}
+
+# %%
+# Model
+# -----
+# {{ The method itself. This is the section that justifies the tutorial existing rather than a
+# README -- explain the mechanism, not the API surface. }}
+
+# %%
+# Training
+# --------
+# {{ Keep this under a couple of minutes on CPU. Long runs belong in main.py. }}
+
+# %%
+# Results
+# -------
+# {{ Show a plot or a table. The first plot in the file becomes the gallery thumbnail, so make the
+# most informative one first. }}
+
+# %%
+# Where to go next
+# ----------------
+# {{ Link the paper, the `kale` API pages used, and one or two neighbouring tutorials. }}

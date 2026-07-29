@@ -1,0 +1,41 @@
+# Every field is validated against _shared/metadata/tutorial.schema.json.
+# Run `make validate` after editing. Enum values are listed in scripts/models.py.
+
+schema_version: 1
+
+title: # Sentence case, no trailing period.
+slug: # Must equal the folder name.
+summary: >- # 20-400 characters; shown on the gallery card and the landing page.
+
+domain: # others | protein | cancer | cardiac | materials -- must match the folder.
+task: # Free text, e.g. "image classification". Kept short; it becomes a filter value.
+
+modality: # image | video | audio | graph | tabular | sequence | omics | neuroimaging
+  -
+method: # Algorithm names as a reader would search for them, e.g. DANN, MPCA.
+  -
+fusion: none # none | early | late | intermediate | tensor | graph
+difficulty: # beginner | intermediate | advanced
+
+dataset:
+  - name:
+    url:
+    size: # Approximate download size; omit if not downloaded.
+    auto_download: false
+
+kale_api: # Derive from the actual imports, not from prose. `make validate` does not check these.
+  -
+
+source_example: # Folder in pykale/examples this came from. Provenance; do not edit after migration.
+entry_point: main.py
+run_command: # Must work verbatim from this directory.
+
+hardware: cpu # cpu | gpu_optional | gpu_required
+estimated_runtime: # e.g. "~5 min on CPU". State the hardware.
+
+colab: true
+binder: false # Binder has no GPU and a slow cold start -- true only for CPU-only tutorials.
+draft: true # Set false once tutorial.py is a real narrative rather than a stub.
+
+references:
+  -

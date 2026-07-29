@@ -1,0 +1,45 @@
+schema_version: 1
+
+title: CIFAR-10 classification with a CNN-Transformer
+slug: cifar_cnn_transformer
+summary: >-
+  Train an 8-layer CNN on CIFAR-10 as a baseline, then stack a Transformer encoder on the same
+  backbone and compare validation accuracy across four Transformer sizes.
+
+domain: others
+task: image classification
+
+modality:
+  - image
+method:
+  - SimpleCNN
+  - CNNTransformer
+fusion: none
+difficulty: beginner
+
+dataset:
+  - name: CIFAR-10
+    url: https://www.cs.toronto.edu/~kriz/cifar.html
+    size: 170 MB
+    auto_download: true
+
+kale_api:
+  - kale.embed.cnn
+  - kale.embed.image_cnn
+  - kale.loaddata.image_access
+  - kale.pipeline.base_nn_trainer
+  - kale.predict.class_domain_nets
+
+source_example: cifar_cnntransformer
+entry_point: main.py
+run_command: python main.py --cfg configs/CF10-CNNTransformer.yaml
+
+hardware: gpu_optional
+estimated_runtime: ~45 min on one GPU
+
+colab: true
+binder: false
+draft: true
+
+references:
+  - https://arxiv.org/abs/1706.03762

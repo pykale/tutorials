@@ -1,0 +1,16 @@
+{#- Ecosystem links in the homepage sidebar. Data from html_context.pky_nav.ecosystem
+    (site_meta.ECOSYSTEM_LINKS). Also present in the navbar Ecosystem dropdown -- the duplication is
+    intentional (global nav vs contextual discovery). -#}
+<div class="pky-side-sec" aria-label="Ecosystem">
+  <h3 class="pky-side-title">Ecosystem</h3>
+  <ul class="pky-side-list">
+    {% for e in pky_nav.ecosystem %}
+    <li>
+      <a href="{{ e.url }}" target="_blank" rel="noopener"
+         aria-label="{{ e.name }} (opens in a new tab)">
+        {{ e.name }}<span class="pky-ext" aria-hidden="true"> ↗</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

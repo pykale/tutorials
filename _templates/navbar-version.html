@@ -1,0 +1,6 @@
+{#- PyKale version chip, shown immediately after the logo. Value comes from html_context
+    (derived at build time in site_meta.pykale_release), never hard-coded. -#}
+<a class="pky-version" href="{{ pykale_version_url }}" target="_blank" rel="noopener"
+   aria-label="PyKale version {{ pykale_version }}" title="PyKale {{ pykale_version }}">
+  {%- if pykale_version == "dev" -%}dev{%- else -%}v{{ pykale_version }}{%- endif -%}
+</a>

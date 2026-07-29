@@ -1,0 +1,23 @@
+"""
+Audio-visual digit classification
+=================================
+
+.. warning::
+   This tutorial is a **stub**. The example in this folder is complete and runnable -- see the
+   README and run the command below -- but the narrated walkthrough has not been written yet.
+   Tracking issue: the tutorial is marked ``draft: true`` in ``metadata.yml``.
+
+Classify spoken-and-written digits from paired audio and image inputs, comparing late fusion, low-rank tensor fusion and bimodal interaction fusion on AVMNIST.
+
+To run the full example now::
+
+    python main.py --cfg configs/late_fusion.yaml --output AVMNIST-LATE
+"""
+
+# %%
+# Setup
+# -----
+# Placeholder so the gallery builds. Replace this file using
+# ``_shared/templates/tutorial.py.template``.
+
+print("See main.py in this folder for the runnable example.")

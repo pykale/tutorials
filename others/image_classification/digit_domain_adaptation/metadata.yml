@@ -1,0 +1,58 @@
+schema_version: 1
+
+title: Domain adaptation on digit images
+summary: >-
+  Adapt a digit classifier from MNIST to USPS without target labels, comparing adversarial and
+  discrepancy-based methods. The reference tutorial for domain adaptation in PyKale.
+slug: digit_domain_adaptation
+
+domain: others
+task: image classification
+
+modality:
+  - image
+method:
+  - DANN
+  - CDAN
+  - DAN
+  - JAN
+  - WDGRL
+  - MME
+fusion: none
+difficulty: beginner
+
+dataset:
+  - name: MNIST
+    url: https://yann.lecun.com/exdb/mnist/
+    size: 12 MB
+    auto_download: true
+  - name: USPS
+    url: https://git-disl.github.io/GTDLBench/datasets/usps_dataset/
+    size: 2 MB
+    auto_download: true
+  - name: MNIST-M
+    url: https://github.com/zumpchke/keras_mnistm
+    size: 100 MB
+    auto_download: true
+
+kale_api:
+  - kale.embed.image_cnn
+  - kale.loaddata.image_access
+  - kale.loaddata.multi_domain
+  - kale.pipeline.domain_adapter
+  - kale.predict.class_domain_nets
+
+source_example: digits_dann
+entry_point: main.py
+run_command: python main.py --cfg configs/MN2UP-DANN.yaml --devices 1
+
+hardware: gpu_optional
+estimated_runtime: ~20 min on one GPU
+
+colab: true
+binder: true
+draft: false
+
+references:
+  - https://arxiv.org/abs/1505.07818
+  - https://github.com/criteo-research/pytorch-ada
