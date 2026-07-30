@@ -4,9 +4,11 @@ on:
   pull_request:
   push:
     branches: [main]
-  schedule:
-    # Nightly, 03:17 UTC. Off-peak minute to avoid the top-of-hour runner crush.
-    - cron: "17 3 * * *"
+  # Nightly schedule temporarily disabled. Verified green via workflow_dispatch on 2026-07-30
+  # (run 30549210747). Re-enable by uncommenting when the nightly execution should resume.
+  # schedule:
+  #   # Nightly, 03:17 UTC. Off-peak minute to avoid the top-of-hour runner crush.
+  #   - cron: "17 3 * * *"
   workflow_dispatch: {}
 
 concurrency:
