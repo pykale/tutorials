@@ -2,3 +2,7 @@
 # Install with:  pip install -r requirements.txt
 
 matplotlib
+# kale.loaddata.image_access (imported for DigitDataset) does a top-level `import pydicom`, but pykale
+# does not declare pydicom as a dependency -- so it must be installed here. Remove once pykale makes
+# that import lazy/optional or declares the dependency upstream.
+pydicom
