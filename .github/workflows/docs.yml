@@ -65,6 +65,30 @@ jobs:
           name: html
           path: _build/html
           retention-days: 14
+      # Also upload in the Pages-artifact format so the deploy job (push to main) can publish it.
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _build/html
+
+  deploy:
+    # Publish the built HTML to GitHub Pages (https://pykale.github.io/tutorials/). Only on pushes to
+    # main -- PRs build but do not deploy. Requires the repo's Pages source to be "GitHub Actions".
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write        # to deploy to Pages
+      id-token: write     # to verify the deployment originates from this workflow
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    # A dedicated group so a deploy is never cancelled mid-publish by a newer run.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
 
   nightly-exec:
     # The only job that actually RUNS tutorials. Without it, a narrative with a runtime bug (a wrong
