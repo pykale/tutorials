@@ -35,12 +35,19 @@ ECOSYSTEM_LINKS = [
 def pykale_release() -> str:
     """Return the PyKale version to display, or ``"dev"`` for an uninstalled checkout.
 
-    Prefers the imported package's ``__version__`` (the documented library), falling back to the
-    installed distribution metadata, then ``"dev"``. No network access.
+    Resolution order: an explicit ``PYKALE_VERSION`` environment override (set by CI to the current
+    PyPI release, so the published site shows e.g. ``v0.2.0`` rather than ``dev``), then the imported
+    package's ``__version__``, then installed distribution metadata, then ``"dev"``. No network access
+    here -- CI resolves the PyPI version and passes it in via the env var.
 
     Returns:
         str: e.g. ``"0.2.0"`` or ``"dev"``.
     """
+    import os
+
+    override = os.environ.get("PYKALE_VERSION", "").strip()
+    if override:
+        return override
     try:
         import kale
 

@@ -58,6 +58,13 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -e ".[docs,dev]"
+      - name: Resolve PyKale's current PyPI release for the navbar version chip
+        # The structure-only build does not install pykale, so site_meta would fall back to "dev".
+        # Pass the latest PyPI version in via PYKALE_VERSION so the published site shows e.g. v0.2.0.
+        run: |
+          VER=$(curl -sf https://pypi.org/pypi/pykale/json | python -c "import sys,json; print(json.load(sys.stdin)['info']['version'])")
+          echo "PYKALE_VERSION=$VER" >> "$GITHUB_ENV"
+          echo "Navbar version chip -> $VER"
       - name: Build (no execution)
         run: make html-noplot
       - uses: actions/upload-artifact@v4
