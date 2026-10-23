@@ -2,7 +2,7 @@
 
 The smallest possible domain adaptation example. Two blob-generated domains, two classes, and a CoIRLS classifier -- runs in seconds and makes the covariate-shift problem visible in one plot.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_synthetic_domain_adaptation.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

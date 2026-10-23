@@ -2,7 +2,7 @@
 
 Quantile Binning sorts landmark predictions into bins of increasing uncertainty with estimated error bounds, so the least reliable predictions can be filtered out before they are acted on.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_landmark_uncertainty_estimation.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

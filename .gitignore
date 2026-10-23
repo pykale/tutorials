@@ -42,13 +42,13 @@ htmlcov/
 Thumbs.db
 
 # Generated tutorial thumbnails (deterministic, rebuilt by scripts/generate_thumbnails.py)
-_static/thumbnails/
+source/_static/thumbnails/
 
 # Generated homepage partials
 _generated/
-_static/tutorials.json
-# copied at setup from _shared/assets/logos
-_static/pykale_logo.png
+source/_static/tutorials.json
+# copied at setup from source/_shared/assets/logos
+source/_static/pykale_logo.png
 
 # Internal working note, kept local (not published)
 docs/PYTORCH_ALIGNMENT.md

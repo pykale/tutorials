@@ -16,7 +16,7 @@ DEFAULT_BRANCH = "main"
 BINDER_BASE = "https://mybinder.org/v2/gh"
 BADGE_IMAGE = "https://mybinder.org/badge_logo.svg"
 
-# Must match colab.NOTEBOOK_DIR: both point at the notebooks CI commits to main.
+# Must match colab.NOTEBOOK_DIR: both point at notebooks once they are published on main.
 NOTEBOOK_DIR = "notebooks"
 
 

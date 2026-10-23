@@ -18,6 +18,6 @@ To run the full example now::
 # Setup
 # -----
 # Placeholder so the gallery builds. Replace this file using
-# ``_shared/templates/tutorial.py.template``.
+# ``source/_shared/templates/plot.py.template``.
 
 print("See main.py in this folder for the runnable example.")

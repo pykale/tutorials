@@ -1,7 +1,7 @@
 """Google Colab launch URLs.
 
 Colab opens a notebook straight from GitHub. Sphinx-gallery writes a ``.ipynb`` next to each built
-page, so the URL points at the *generated* notebook path under ``docs/``, not at ``tutorial.py``.
+page, so the URL points at the *published* notebook path under ``notebooks/``, not at the source script.
 """
 
 from __future__ import annotations
@@ -27,9 +27,8 @@ def notebook_path(relative_path: str) -> str:
     Colab can only open notebooks from GitHub, Drive or a gist -- not from the built docs site.
     Sphinx-gallery's notebooks are build artefacts under ``_gallery/`` (gitignored), so they are not
     reachable by URL as-is. PyTorch solves this by publishing the built site -- notebooks included --
-    to a GitHub branch and pointing Colab at that branch. We adopt the same approach: CI copies the
-    generated notebooks to ``notebooks/`` on the published branch. Wiring that up is Phase 2, tied to
-    the docs-host decision; until then these URLs 404.
+    to a GitHub branch and pointing Colab at that branch. Publishing generated notebooks to
+    ``notebooks/`` is still pending, so these URLs are not offered as live links yet.
 
     Args:
         relative_path: Tutorial directory relative to the repo root, e.g.

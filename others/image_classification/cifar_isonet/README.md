@@ -2,7 +2,7 @@
 
 Deep isometric learning on CIFAR-10/100. ISONet trains very deep networks without residual connections or batch normalisation by keeping the layer-wise transform close to an isometry.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_cifar_isonet.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

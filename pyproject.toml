@@ -84,10 +84,10 @@ known_first_party = ["kale"]
 python_version = "3.10"
 ignore_missing_imports = true
 # Only the build scripts are type-checked. Tutorial code mirrors upstream examples verbatim.
-files = ["scripts", "_shared"]
+files = ["scripts", "source/_shared"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-# scripts/ holds the modules under test; _shared/ is imported by the gallery-config tests.
-pythonpath = ["scripts", "_shared"]
+# scripts/ holds the modules under test; source/_shared/ is imported by the gallery-config tests.
+pythonpath = ["scripts", "source/_shared"]
 addopts = "-ra"

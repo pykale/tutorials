@@ -29,11 +29,11 @@ def test_tutorial_page_label():
 
 def test_non_domain_pages_have_no_context():
     assert sidebar_context(CAT, "index") is None
-    assert sidebar_context(CAT, "about") is None
+    assert sidebar_context(CAT, "pages/about") is None
 
 
 def test_template_has_no_hardcoded_domain():
-    tpl = (REPO_ROOT / "_templates" / "sidebar-nav-bs.html").read_text(encoding="utf-8")
+    tpl = (REPO_ROOT / "source" / "_templates" / "sidebar-nav-bs.html").read_text(encoding="utf-8")
     assert "pky_sidebar_context" in tpl
     for domain in ("Others", "Protein", "Cancer", "Cardiac", "Materials"):
         assert domain not in tpl, f"{domain} is hard-coded in the shared template"

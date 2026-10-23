@@ -44,9 +44,7 @@ def build() -> int:
     for bucket in catalog.buckets:
         paths = bucket.iter_relative_paths()
         count = len(paths)
-        count_line = (
-            "Tutorials in development." if count == 0 else f"{count} tutorial{'s' if count != 1 else ''}."
-        )
+        count_line = "Tutorials in development." if count == 0 else f"{count} tutorial{'s' if count != 1 else ''}."
         lines = [
             f"{bucket.label}",
             "=" * len(bucket.label),
@@ -81,7 +79,7 @@ def build() -> int:
                     f"   .. grid-item-card:: {metadata.title}",
                     f"      :link: {_gallery_doc(path)}",
                     "      :link-type: doc",
-                    f"      :img-top: /_static/thumbnails/{metadata.slug}.svg",
+                    f"      :img-top: /source/_static/thumbnails/{metadata.slug}.svg",
                     f"      :class-card: pky-tut-card pky-{bucket.id.value}",
                     "",
                     f"      {status}",

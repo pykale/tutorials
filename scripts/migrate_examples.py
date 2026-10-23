@@ -1,7 +1,7 @@
 """Copy PyKale examples into the tutorial tree.
 
 One-shot in principle, idempotent in practice: re-running overwrites the copied example files and
-leaves authored files (``tutorial.py``, ``metadata.yml``, ``README.md``, ``requirements.txt``) alone
+leaves authored files (``plot_<slug>.py``, ``metadata.yml``, ``README.md``, ``requirements.txt``) alone
 unless ``--force-authored`` is passed. That distinction matters -- the whole point is that hand-written
 narrative survives a re-sync from upstream.
 

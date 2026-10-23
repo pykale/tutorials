@@ -2,7 +2,7 @@
 
 Transfer an action recogniser between egocentric video domains. Same adversarial adaptation pipeline as the digits tutorial, with a 3D-CNN feature extractor and video data loaders.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_action_recognition.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

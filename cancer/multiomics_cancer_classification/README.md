@@ -2,7 +2,7 @@
 
 Integrate mRNA expression, DNA methylation and miRNA expression with per-omics graph convolutional networks, fusing their predictions through a view-correlation discovery network.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_multiomics_cancer_classification.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

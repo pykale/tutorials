@@ -2,7 +2,7 @@
 
 Predict binding affinity between compounds and protein targets by encoding SMILES strings and amino-acid sequences with parallel CNNs, on three BindingDB subsets (Kd, IC50, Ki).
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_drug_target_affinity_prediction.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

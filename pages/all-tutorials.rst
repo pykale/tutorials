@@ -8,7 +8,7 @@ count and URL update as you go, so a filtered view can be shared.
 
 .. raw:: html
 
-   <div id="pky-catalog" class="pky-catalog" data-src="_static/tutorials.json" data-sync-url="true">
+   <div id="pky-catalog" class="pky-catalog" data-src="../_static/tutorials.json" data-root="../" data-sync-url="true">
      <div class="pky-catalog-controls">
        <div class="pky-search">
          <label for="pky-q" class="pky-visually-hidden">Search tutorials</label>

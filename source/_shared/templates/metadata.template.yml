@@ -1,4 +1,4 @@
-# Every field is validated against _shared/metadata/tutorial.schema.json.
+# Every field is validated against source/_shared/metadata/tutorial.schema.json.
 # Run `make validate` after editing. Enum values are listed in scripts/models.py.
 
 schema_version: 1
@@ -35,7 +35,7 @@ estimated_runtime: # e.g. "~5 min on CPU". State the hardware.
 
 colab: true
 binder: false # Binder has no GPU and a slow cold start -- true only for CPU-only tutorials.
-draft: true # Set false once tutorial.py is a real narrative rather than a stub.
+draft: true # Set false once plot_<slug>.py is a real narrative rather than a stub.
 
 references:
   -

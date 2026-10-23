@@ -2,7 +2,7 @@
 
 Classify spoken-and-written digits from paired audio and image inputs, comparing late fusion, low-rank tensor fusion and bimodal interaction fusion on AVMNIST.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_audio_visual_digit_classification.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

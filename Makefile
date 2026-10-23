@@ -7,8 +7,8 @@ PYTHON     ?= python
 help:
 	@echo "install      install docs + dev dependencies"
 	@echo "validate     check catalog, metadata, schema and thumbnails agree (run before pushing)"
-	@echo "schema       regenerate _shared/metadata/tutorial.schema.json"
-	@echo "export       regenerate the landing-page + _static tutorials.json"
+	@echo "schema       regenerate source/_shared/metadata/tutorial.schema.json"
+	@echo "export       regenerate the landing-page + source/_static tutorials.json"
 	@echo "pages        regenerate the per-domain pages"
 	@echo "thumbnails   regenerate the placeholder SVG thumbnails"
 	@echo "homepage     regenerate the homepage/list-page partials"

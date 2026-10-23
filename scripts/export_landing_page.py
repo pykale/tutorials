@@ -16,8 +16,9 @@ from typing import Any, Dict, List
 
 import yaml
 from models import REPO_ROOT, Catalog, TutorialMetadata
+from site_meta import NOTEBOOKS_PUBLISHED
 
-sys.path.insert(0, str(REPO_ROOT / "_shared"))
+sys.path.insert(0, str(REPO_ROOT / "source" / "_shared"))
 from launch.binder import binder_url  # noqa: E402
 from launch.colab import colab_url  # noqa: E402
 
@@ -55,8 +56,8 @@ def _tutorial_entry(relative_path: str) -> Dict[str, Any]:
         "links": {
             "docs": f"{DOCS_BASE}/{metadata.domain.value}/{metadata.slug}.html",
             "source": f"https://github.com/pykale/tutorials/tree/main/{relative_path}",
-            "colab": colab_url(relative_path) if metadata.colab else None,
-            "binder": binder_url(relative_path) if metadata.binder else None,
+            "colab": colab_url(relative_path) if NOTEBOOKS_PUBLISHED and metadata.colab else None,
+            "binder": binder_url(relative_path) if NOTEBOOKS_PUBLISHED and metadata.binder else None,
         },
     }
     return entry
@@ -124,9 +125,9 @@ def main() -> int:
     args.output.write_text(payload, encoding="utf-8")
     print(f"wrote {args.output} ({len(payload.splitlines())} lines)")
 
-    # The site's own faceted catalogue reads this from _static so the build is self-contained; the
-    # landing-page copy is the separate downstream consumer.
-    static_copy = REPO_ROOT / "_static" / "tutorials.json"
+    # The site's own faceted catalogue reads this from source/_static so the build is self-contained;
+    # the landing-page copy is the separate downstream consumer.
+    static_copy = REPO_ROOT / "source" / "_static" / "tutorials.json"
     static_copy.write_text(payload, encoding="utf-8")
     print(f"wrote {static_copy}")
     return 0

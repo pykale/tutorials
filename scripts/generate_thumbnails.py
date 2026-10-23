@@ -7,8 +7,8 @@ Draft / Coming soon badge -- so the catalogue never looks unfinished, while a st
 
 Deterministic: the same metadata always yields byte-identical SVG (no timestamps, no randomness), so
 the files are reproducible and a ``--check`` mode can verify them in CI. Output goes to
-``_static/thumbnails/`` (gitignored); the real sphinx-gallery figure supersedes the placeholder once a
-tutorial is written and executed (see :func:`resolve_thumbnail`).
+``source/_static/thumbnails/`` (gitignored); the real sphinx-gallery figure supersedes the placeholder
+once a tutorial is written and executed (see :func:`resolve_thumbnail`).
 
     python scripts/generate_thumbnails.py            # write all
     python scripts/generate_thumbnails.py --check     # fail if any is stale/missing
@@ -24,7 +24,7 @@ from typing import Optional
 import yaml
 from models import REPO_ROOT, Catalog, TutorialMetadata
 
-THUMBNAIL_DIR = REPO_ROOT / "_static" / "thumbnails"
+THUMBNAIL_DIR = REPO_ROOT / "source" / "_static" / "thumbnails"
 WIDTH, HEIGHT = 400, 260
 
 # Abstract domain symbols. Each returns SVG markup drawn in `accent`, centred around (cx, cy). Kept
@@ -61,8 +61,7 @@ def _sym_layers(accent: str) -> str:  # Cancer: stacked multi-omics layers
     for i, dy in enumerate((110, 135, 160)):
         op = 0.35 + i * 0.25
         out.append(
-            f'<polygon points="150,{dy} 250,{dy - 22} 300,{dy} 200,{dy + 22}" '
-            f'fill="{accent}" opacity="{op:.2f}"/>'
+            f'<polygon points="150,{dy} 250,{dy - 22} 300,{dy} 200,{dy + 22}" ' f'fill="{accent}" opacity="{op:.2f}"/>'
         )
     return "".join(out)
 
@@ -131,9 +130,7 @@ def _escape(text: str) -> str:
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
-def thumbnail_svg(
-    title: str, accent: str, symbol: str, *, badge: Optional[str] = None, bare: bool = False
-) -> str:
+def thumbnail_svg(title: str, accent: str, symbol: str, *, badge: Optional[str] = None, bare: bool = False) -> str:
     """Build a deterministic branded placeholder SVG.
 
     Args:
@@ -174,7 +171,7 @@ def thumbnail_svg(
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {WIDTH} {HEIGHT}" '
         f'width="{WIDTH}" height="{HEIGHT}" role="img" aria-label="{_escape(title)}">'
-        f"<defs><linearGradient id=\"g\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\">"
+        f'<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">'
         f'<stop offset="0" stop-color="{accent}" stop-opacity="0.10"/>'
         f'<stop offset="1" stop-color="{accent}" stop-opacity="0.02"/></linearGradient></defs>'
         # Solid light base so the tile is self-contained: the dark title stays legible whether the
@@ -251,9 +248,7 @@ def build(check: bool = False) -> int:
     # "Coming soon"; populated ones carry no badge.
     for bucket in catalog.buckets:
         empty = not (bucket.tutorials or bucket.groups)
-        svg = thumbnail_svg(
-            bucket.label, bucket.color, bucket.icon, badge="Coming soon" if empty else None, bare=True
-        )
+        svg = thumbnail_svg(bucket.label, bucket.color, bucket.icon, badge="Coming soon" if empty else None, bare=True)
         target = THUMBNAIL_DIR / f"domain_{bucket.id.value}.svg"
         if check:
             if not target.exists() or target.read_text(encoding="utf-8") != svg:

@@ -6,6 +6,7 @@ contract. These tests pin the parts the site depends on.
 
 from __future__ import annotations
 
+import export_landing_page
 from export_landing_page import build_payload
 from models import Catalog
 
@@ -46,15 +47,18 @@ def test_facets_cover_every_filter_the_site_offers():
         assert all(item["count"] > 0 for item in values)
 
 
-def test_colab_and_binder_links_respect_metadata_flags():
+def test_colab_and_binder_links_are_hidden_until_notebooks_are_published(monkeypatch):
     payload = build_payload()
-    by_slug = {entry["slug"]: entry for entry in payload["tutorials"]}
+    assert all(entry["links"]["colab"] is None and entry["links"]["binder"] is None for entry in payload["tutorials"])
+
+    monkeypatch.setattr(export_landing_page, "NOTEBOOKS_PUBLISHED", True)
+    by_slug = {entry["slug"]: entry for entry in build_payload()["tutorials"]}
 
     # action_recognition needs a GPU and hours of compute: neither launcher should be offered.
     assert by_slug["action_recognition"]["links"]["colab"] is None
     assert by_slug["action_recognition"]["links"]["binder"] is None
 
-    # synthetic_domain_adaptation runs in seconds on CPU: both should be.
+    # Once notebooks exist, metadata decides which launchers are offered.
     assert by_slug["synthetic_domain_adaptation"]["links"]["colab"].startswith("https://colab.research.google.com/")
     assert by_slug["synthetic_domain_adaptation"]["links"]["binder"].startswith("https://mybinder.org/")
 

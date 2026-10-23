@@ -2,7 +2,7 @@
 
 Diagnose pulmonary arterial hypertension from short-axis cardiac MRI. MPCA keeps the tensor structure of the image stack intact, and the learned weights map back onto the anatomy.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_cardiac_mri_diagnosis.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

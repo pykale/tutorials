@@ -2,7 +2,7 @@
 
 Adapt from three labelled source domains to one unlabelled target using moment matching (M3SDA) and multiple feature-space alignment (MFSAN), on Office-Caltech and digits.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_office_multisource_adaptation.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description
