@@ -12,10 +12,10 @@
   "use strict";
 
   function pkyInit() {
-  // Full-width landing treatment for pages that carry the catalogue (homepage, all-tutorials).
   var root = document.getElementById("pky-catalog");
-  if (root) document.body.classList.add("pky-landing");
   if (!root) return;
+  document.body.classList.add("pky-landing");
+  if (root.hasAttribute("data-home")) document.body.classList.add("pky-home");
   var siteRoot = root.getAttribute("data-root") || "";
 
   var FACETS = [
@@ -33,7 +33,17 @@
   var emptyEl = document.getElementById("pky-empty");
   var searchEl = document.getElementById("pky-q");
   var clearEl = document.getElementById("pky-clear");
+  var filterDetails = root.querySelector(".pky-filter-details");
+  var filterSummary = document.getElementById("pky-filter-summary");
   var syncUrl = root.hasAttribute("data-sync-url");
+
+  if (filterDetails) {
+    var compactFilters = window.matchMedia("(max-width: 768px)");
+    filterDetails.open = !compactFilters.matches;
+    compactFilters.addEventListener("change", function (event) {
+      filterDetails.open = !event.matches;
+    });
+  }
 
   var domainLabels = {};
   var tutorials = [];
@@ -124,6 +134,10 @@
     grid.innerHTML = shown.map(card).join("");
     emptyEl.hidden = shown.length !== 0;
     countEl.textContent = shown.length + " of " + tutorials.length + " tutorials";
+    if (filterSummary) {
+      var selectedCount = FACETS.reduce(function (total, f) { return total + active[f.key].size; }, 0);
+      filterSummary.textContent = selectedCount ? "Filters (" + selectedCount + " active)" : "Filters";
+    }
     writeUrl();
   }
 
