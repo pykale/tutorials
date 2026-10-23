@@ -23,5 +23,5 @@ and downloads, themed with the `PyData Sphinx Theme <https://pydata-sphinx-theme
 The catalogue in ``tutorial_catalog.yml`` is the single source of truth; domain pages, the homepage
 sections, thumbnails and the filterable catalogue are all generated from it.
 
-See :doc:`CONTRIBUTING` to add or improve a tutorial, and the `roadmap
+See :doc:`/CONTRIBUTING` to add or improve a tutorial, and the `roadmap
 <https://github.com/pykale/tutorials/blob/main/ROADMAP.md>`_ for what is planned.

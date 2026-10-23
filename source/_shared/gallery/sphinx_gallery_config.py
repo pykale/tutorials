@@ -13,7 +13,8 @@ from typing import Any, Dict, List, Tuple
 
 import yaml
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+# This file lives at source/_shared/gallery/, so the repo root is four levels up.
+REPO_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 from models import Catalog, TutorialMetadata  # noqa: E402
@@ -92,7 +93,7 @@ def build_gallery_conf(catalog: Catalog | None = None) -> Dict[str, Any]:
         "remove_config_comments": True,
         "plot_gallery": True,
         "thumbnail_size": (400, 280),
-        "default_thumb_file": str(REPO_ROOT / "_shared" / "assets" / "logos" / "pykale_logo.png"),
+        "default_thumb_file": str(REPO_ROOT / "source" / "_shared" / "assets" / "logos" / "pykale_logo.png"),
         "line_numbers": False,
         "show_signature": False,
         "min_reported_time": 10,

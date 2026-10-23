@@ -1,12 +1,12 @@
 # Extra dependencies for this tutorial, on top of the repo core (see pyproject.toml).
 # Install with:  pip install -r requirements.txt
 
-matplotlib
 # This tutorial imports kale.loaddata.image_access (for DigitDataset), which pulls in pykale's image
 # stack at import time. Those live in pykale's optional `image` extra (setup.py image_requires), not
 # its core install_requires, so a plain `pip install pykale` omits them -- list them here. Equivalent
 # to installing pykale[image]; keep in sync if that extra changes upstream.
 glob2
+matplotlib
 pydicom
 pylibjpeg
 python-gdcm

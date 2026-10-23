@@ -5,7 +5,7 @@ with sections that must stay in sync with the catalogue and the news file. Those
 generated here into ``_generated/*.rst`` and pulled in with ``.. include::``, so:
 
 * domain cards, counts and learning paths never drift from ``tutorial_catalog.yml``;
-* announcements live in ``_data/news.yml``, not buried in ``index.rst``.
+* announcements live in ``source/_data/news.yml``, not buried in ``index.rst``.
 
 ``_generated/`` is gitignored and excluded from the Sphinx source tree (the files are include
 fragments, not standalone pages).
@@ -24,7 +24,7 @@ import yaml
 from models import REPO_ROOT, Catalog, TutorialMetadata
 
 GENERATED_DIR = REPO_ROOT / "_generated"
-NEWS_FILE = REPO_ROOT / "_data" / "news.yml"
+NEWS_FILE = REPO_ROOT / "source" / "_data" / "news.yml"
 # Each news badge gets a distinct sphinx-design colour role (styled in custom.css): New = green,
 # Updated = blue, Planned = amber. Unknown badges fall back to a neutral secondary.
 BADGE_ROLE = {"New": "bdg-success", "Updated": "bdg-info", "Planned": "bdg-warning"}
@@ -75,7 +75,7 @@ def _domains_rst() -> str:
             f"   .. grid-item-card:: {bucket.label}",
             f"      :link: _pages/{bucket.id.value}",
             "      :link-type: doc",
-            f"      :img-top: /_static/thumbnails/domain_{bucket.id.value}.svg",
+            f"      :img-top: /source/_static/thumbnails/domain_{bucket.id.value}.svg",
             f"      :class-card: pky-domain-card pky-{bucket.id.value}",
             "",
             f"      {status}",

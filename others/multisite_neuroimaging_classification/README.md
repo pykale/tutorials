@@ -2,7 +2,7 @@
 
 Autism detection from resting-state fMRI pooled across four ABIDE acquisition sites, using CoIRLS to regularise away site-driven covariate shift.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_multisite_neuroimaging_classification.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

@@ -6,17 +6,23 @@ tutorial. Colab and Notebook are only offered as working links when notebooks ar
 so the UI never shows a working-looking dead link.
 
 ``conf.py`` calls :func:`tutorial_actions` from an html-page-context hook for each gallery page and
-puts the result in ``context["pky_tutorial"]``; ``_templates/tutorial-actions.html`` renders it.
+puts the result in ``context["pky_tutorial"]``; ``source/_templates/tutorial-actions.html`` renders it.
 """
 
 from __future__ import annotations
 
-from typing import Dict, Optional
+from typing import Dict, Optional, TypedDict
 
 from site_meta import FEEDBACK_REPO, NOTEBOOKS_PUBLISHED, REPO_BRANCH
 
-# Where CI is expected to publish sphinx-gallery notebooks (see _shared/launch/colab.py).
+# Where CI is expected to publish sphinx-gallery notebooks (see source/_shared/launch/colab.py).
 NOTEBOOK_DIR = "notebooks"
+
+
+class TutorialAction(TypedDict):
+    url: Optional[str]
+    enabled: bool
+    reason: Optional[str]
 
 
 def source_path(rel_path: str, slug: str) -> str:
@@ -45,7 +51,7 @@ def tutorial_actions(
     *,
     draft: bool = False,
     notebooks_published: bool = NOTEBOOKS_PUBLISHED,
-) -> Dict[str, Dict[str, Optional[str]]]:
+) -> Dict[str, TutorialAction]:
     """Build the action set for one tutorial.
 
     Args:
@@ -59,11 +65,11 @@ def tutorial_actions(
         ``github`` is always enabled; the other two are enabled only when notebooks are published,
         and otherwise carry a human-readable ``reason`` for the disabled state.
     """
-    github = {"url": github_source_url(rel_path, slug), "enabled": True, "reason": None}
+    github: TutorialAction = {"url": github_source_url(rel_path, slug), "enabled": True, "reason": None}
 
     if notebooks_published:
-        notebook = {"url": notebook_url(rel_path, slug), "enabled": True, "reason": None}
-        colab = {"url": colab_url(rel_path, slug), "enabled": True, "reason": None}
+        notebook: TutorialAction = {"url": notebook_url(rel_path, slug), "enabled": True, "reason": None}
+        colab: TutorialAction = {"url": colab_url(rel_path, slug), "enabled": True, "reason": None}
     else:
         reason = (
             "Notebook will be available when this draft becomes executable."
@@ -89,11 +95,11 @@ def gallery_pagename_to_tutorial(pagename: str) -> Optional[tuple[str, str]]:
     prefix = "_gallery/"
     if not pagename.startswith(prefix):
         return None
-    rest = pagename[len(prefix):]
+    rest = pagename[len(prefix) :]
     parts = rest.split("/")
     if len(parts) < 2 or not parts[-1].startswith("plot_"):
         return None
-    slug = parts[-1][len("plot_"):]
+    slug = parts[-1][len("plot_") :]
     rel_path = "/".join(parts[:-1])
     if rel_path.split("/")[-1] != slug:
         return None

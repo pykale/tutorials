@@ -6,9 +6,13 @@ if such fragile offsets return, or if the homepage stops declaring its landing c
 
 from __future__ import annotations
 
+import ast
+import re
+from urllib.parse import urljoin
+
 from models import REPO_ROOT
 
-CSS = (REPO_ROOT / "_static" / "custom.css").read_text(encoding="utf-8")
+CSS = (REPO_ROOT / "source" / "_static" / "custom.css").read_text(encoding="utf-8")
 INDEX = (REPO_ROOT / "index.rst").read_text(encoding="utf-8")
 
 
@@ -21,7 +25,7 @@ def test_no_viewport_width_breakout_on_hero():
 def test_hero_uses_no_negative_left_margin_or_transform_positioning():
     # Scan the .pky-hero rule block only.
     start = CSS.index(".pky-hero {")
-    block = CSS[start:start + 600]
+    block = CSS[start : start + 600]
     assert "margin-left: calc" not in block
     assert "translateX" not in block and "position: absolute" not in block
 
@@ -41,12 +45,42 @@ def test_landing_pages_are_declared_in_conf():
     assert "pky-onthispage" in conf and "pky-ecosystem" in conf and "pky-feedback" in conf
 
 
+def test_content_pages_live_together_and_old_urls_redirect():
+    pages = sorted((REPO_ROOT / "pages").glob("*.rst"))
+    assert pages
+    root_pages = {path.name for path in REPO_ROOT.glob("*.rst")} - {"sg_execution_times.rst"}
+    assert root_pages == {"index.rst"}
+
+    config = ast.parse((REPO_ROOT / "conf.py").read_text(encoding="utf-8"))
+    redirects = next(
+        ast.literal_eval(node.value)
+        for node in config.body
+        if isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name) and node.target.id == "redirects"
+    )
+    for page in pages:
+        assert redirects[page.stem] == f"pages/{page.stem}.html"
+
+
+def test_nested_catalogue_resolves_assets_and_gallery_links():
+    page = (REPO_ROOT / "pages" / "all-tutorials.rst").read_text(encoding="utf-8")
+    source = re.search(r'data-src="([^"]+)"', page).group(1)
+    site_root = re.search(r'data-root="([^"]+)"', page).group(1)
+    base = "https://pykale.github.io/tutorials/pages/all-tutorials.html"
+    assert urljoin(base, source) == "https://pykale.github.io/tutorials/_static/tutorials.json"
+    assert urljoin(base, site_root + "_gallery/example/plot_example.html") == (
+        "https://pykale.github.io/tutorials/_gallery/example/plot_example.html"
+    )
+    js = (REPO_ROOT / "source" / "_static" / "js" / "catalog.js").read_text(encoding="utf-8")
+    assert 'siteRoot + "_static/thumbnails/"' in js
+    assert 'siteRoot + "_gallery/"' in js
+
+
 def test_green_focus_ring_not_removed():
     # Global green focus ring stays; where nav toggles drop the outline they replace it with a
     # visible green inset bottom line (an accessible treatment), never a blanket removal.
     assert "outline: 3px solid var(--pykale-focus)" in CSS
     start = CSS.index(".bd-header .pky-dropdown .nav-link.dropdown-toggle:focus-visible")
-    block = CSS[start:start + 220]
+    block = CSS[start : start + 220]
     assert "outline: none" in block and "inset 0 -2px 0 var(--pst-color-primary)" in block
 
 
@@ -63,7 +97,7 @@ def test_card_grid_has_five_column_max_breakpoint():
 
 def test_back_to_top_is_bounded_not_a_bar():
     start = CSS.index("#pst-back-to-top {")
-    block = CSS[start:start + 400]
+    block = CSS[start : start + 400]
     assert "border-radius: 50%" in block
     assert "46px" in block  # compact circle, not a full-width bar
 
@@ -93,7 +127,7 @@ def test_bucket_grid_columns_are_capped_per_count():
     # not stretch across the container, while a full domain fills the row.
     assert ".pky-domain-grid.pky-cols-1 .sd-row { grid-template-columns: minmax(0, 1fr); max-width: 24rem" in CSS
     assert ".pky-domain-grid.pky-cols-4 .sd-row { grid-template-columns: repeat(4, minmax(0, 1fr))" in CSS
-    assert "repeat(5" not in CSS[CSS.index(".pky-domain-grid .sd-row {"):CSS.index(".pky-domain-grid .sd-col")]
+    assert "repeat(5" not in CSS[CSS.index(".pky-domain-grid .sd-row {") : CSS.index(".pky-domain-grid .sd-col")]
 
 
 def test_bucket_grid_column_count_is_generated_from_metadata():
@@ -113,12 +147,12 @@ def test_navbar_uses_bottom_indicator_not_rectangle():
     # No full outline rectangle on the toggles; a green inset bottom line instead.
     assert "inset 0 -2px 0 var(--pst-color-primary)" in CSS
     start = CSS.index(".bd-header .pky-dropdown .nav-link.dropdown-toggle:focus-visible")
-    block = CSS[start:start + 200]
+    block = CSS[start : start + 200]
     assert "outline: none" in block  # rectangle removed, replaced by the indicator
 
 
 def test_back_to_top_arrow_is_visible():
     start = CSS.index("#pst-back-to-top svg")
-    block = CSS[start:start + 200]
+    block = CSS[start : start + 200]
     assert "fill: #fff" in block  # the theme arrow SVG is shown white, not hidden
     assert "display: none" not in block

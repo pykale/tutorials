@@ -27,7 +27,7 @@ goto end
 :help
 echo   validate     check catalog, metadata, schema and thumbnails agree
 echo   schema       regenerate the metadata JSON schema
-echo   export       regenerate the landing-page + _static tutorials.json
+echo   export       regenerate the landing-page + source/_static tutorials.json
 echo   pages        regenerate the per-domain pages
 echo   thumbnails   regenerate the placeholder SVG thumbnails
 echo   homepage     regenerate the homepage/list-page partials

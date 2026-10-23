@@ -2,7 +2,7 @@
 
 Prototypical Networks under N-way K-shot settings. Learn an embedding where class prototypes are the mean of their support samples, then classify query samples by distance to those prototypes.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_fewshot_image_classification.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

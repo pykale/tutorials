@@ -37,31 +37,31 @@ Tutorials are filed by the domain that owns them:
    :gutter: 2
 
    .. grid-item-card:: Protein
-      :link: _pages/protein
+      :link: /_pages/protein
       :link-type: doc
 
       Drug-target binding and polypharmacy side effects.
 
    .. grid-item-card:: Cancer
-      :link: _pages/cancer
+      :link: /_pages/cancer
       :link-type: doc
 
       Multiomics integration for cancer classification.
 
    .. grid-item-card:: Cardiac
-      :link: _pages/cardiac
+      :link: /_pages/cardiac
       :link-type: doc
 
       Cardiac imaging and uncertainty estimation.
 
    .. grid-item-card:: Others
-      :link: _pages/others
+      :link: /_pages/others
       :link-type: doc
 
       Method demonstrations: recognition, domain adaptation, few-shot learning.
 
    .. grid-item-card:: Materials
-      :link: _pages/materials
+      :link: /_pages/materials
       :link-type: doc
 
       Reserved — tutorials in development.
@@ -71,4 +71,4 @@ Adapt an example to your own data
 
 Every tutorial ships its complete ``main.py`` and config. Fork the folder, point
 ``DATASET.ROOT`` (or the equivalent config field) at your data, and adjust the model. See
-:doc:`CONTRIBUTING` for conventions, and :doc:`all-tutorials` to browse everything.
+:doc:`/CONTRIBUTING` for conventions, and :doc:`/pages/all-tutorials` to browse everything.

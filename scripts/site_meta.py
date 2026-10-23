@@ -13,7 +13,7 @@ FEEDBACK_REPO = "pykale/tutorials"
 REPO_BRANCH = "main"
 
 # Whether sphinx-gallery's generated notebooks are published to a public branch/site. Until the
-# deployment does this (see ROADMAP Phase 2), the Colab and Notebook actions are shown DISABLED with
+# deployment does this (see ROADMAP), the Colab and Notebook actions are shown DISABLED with
 # a tooltip rather than as working-looking dead links. Flip to True once publishing is wired up.
 NOTEBOOKS_PUBLISHED = False
 

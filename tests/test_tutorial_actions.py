@@ -2,12 +2,7 @@
 
 from __future__ import annotations
 
-from tutorial_actions import (
-    gallery_pagename_to_tutorial,
-    github_source_url,
-    notebook_url,
-    tutorial_actions,
-)
+from tutorial_actions import gallery_pagename_to_tutorial, github_source_url, notebook_url, tutorial_actions
 
 REL = "others/image_classification/cifar_isonet"
 SLUG = "cifar_isonet"

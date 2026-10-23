@@ -2,7 +2,7 @@
 
 Load, sample and augment video datasets with VideoFrameDataset. Sparse temporal sampling keeps memory flat regardless of clip length, and the loader plugs straight into torch DataLoader.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_video_data_loading.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

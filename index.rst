@@ -13,8 +13,8 @@ Learn with PyKale
            interdisciplinary AI — organised by the domain that owns them.
          </p>
          <div class="pky-hero-cta">
-           <a class="pky-btn pky-btn-primary" href="getting-started.html">Start learning</a>
-           <a class="pky-btn pky-btn-ghost" href="all-tutorials.html">Browse tutorials</a>
+           <a class="pky-btn pky-btn-primary" href="pages/getting-started.html">Start learning</a>
+           <a class="pky-btn pky-btn-ghost" href="pages/all-tutorials.html">Browse tutorials</a>
            <a class="pky-btn pky-btn-ghost" href="https://github.com/pykale/pykale"
               target="_blank" rel="noopener">View on GitHub ↗</a>
          </div>
@@ -61,7 +61,7 @@ Get started
       Domain adaptation on digit images: the recommended starting point.
 
    .. grid-item-card:: 3 · Explore a domain
-      :link: all-tutorials
+      :link: pages/all-tutorials
       :link-type: doc
 
       Browse by Protein, Cancer, Cardiac, Materials or Others.
@@ -119,10 +119,10 @@ Contributing
       :link: CONTRIBUTING
       :link-type: doc
 
-      Start from the templates in ``_shared/templates/``.
+      Start from the templates in ``source/_shared/templates/``.
 
    .. grid-item-card:: Improve one
-      :link: tutorial-status
+      :link: pages/tutorial-status
       :link-type: doc
 
       See which narratives are still drafts and pick one to write.
@@ -141,11 +141,11 @@ Contributing
 .. toctree::
    :hidden:
 
-   getting-started
-   all-tutorials
-   learning-paths
-   tutorial-status
-   about
+   pages/getting-started
+   pages/all-tutorials
+   pages/learning-paths
+   pages/tutorial-status
+   pages/about
 
 .. toctree::
    :caption: Domains

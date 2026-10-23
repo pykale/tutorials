@@ -14,7 +14,8 @@
   badge: New
   summary: >-
     Every tutorial is a runnable script. The narrated version builds into a notebook and a
-    downloadable Python file, and CPU-runnable tutorials are executed nightly in CI.
+    downloadable Python file. The executing CI build can be run manually; its nightly schedule is
+    currently disabled.
 
 - title: Reference tutorial available
   date: 2026-07-24

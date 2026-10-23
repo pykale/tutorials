@@ -3,7 +3,7 @@
 This module is the single definition of the metadata contract. Three consumers derive from it and
 therefore cannot disagree with each other:
 
-* ``generate_schema.py``   -- emits ``_shared/metadata/tutorial.schema.json`` from these models.
+* ``generate_schema.py``   -- emits ``source/_shared/metadata/tutorial.schema.json`` from these models.
 * ``validate_catalog.py``  -- parses every ``metadata.yml`` through them.
 * ``export_landing_page.py`` -- builds the landing-page filter facets from the enums below.
 
@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CATALOG_PATH = REPO_ROOT / "tutorial_catalog.yml"
-SCHEMA_PATH = REPO_ROOT / "_shared" / "metadata" / "tutorial.schema.json"
+SCHEMA_PATH = REPO_ROOT / "source" / "_shared" / "metadata" / "tutorial.schema.json"
 
 # Domain folders (others/, protein/, ...) sit directly at the repo root, so a tutorial path is
 # "<domain>/<slug>" or "<domain>/<group>/<slug>". Everything that walks the tree goes through
@@ -29,7 +29,19 @@ SCHEMA_PATH = REPO_ROOT / "_shared" / "metadata" / "tutorial.schema.json"
 TUTORIALS_ROOT = REPO_ROOT
 
 # Root directories that are infrastructure, never tutorials. Used when discovering folders on disk.
-NON_TUTORIAL_DIRS = {"_shared", "_build", "_gallery", "_pages", "_static", "scripts", "tests", ".git", ".github"}
+# ``source`` holds build infrastructure (static/templates/shared/data); ``pages`` holds content pages.
+NON_TUTORIAL_DIRS = {
+    "source",
+    "pages",
+    "_build",
+    "_gallery",
+    "_pages",
+    "_generated",
+    "scripts",
+    "tests",
+    ".git",
+    ".github",
+}
 
 SLUG_PATTERN = r"^[a-z][a-z0-9_]*$"
 
@@ -90,7 +102,7 @@ class Dataset(BaseModel):
 
 
 class TutorialMetadata(BaseModel):
-    """Contract for every ``metadata.yml``. Mirrors ``_shared/templates/metadata.template.yml``."""
+    """Contract for every ``metadata.yml``. Mirrors ``source/_shared/templates/metadata.template.yml``."""
 
     model_config = ConfigDict(extra="forbid")
 
@@ -121,7 +133,7 @@ class TutorialMetadata(BaseModel):
     binder: bool = Field(default=False, description="Offer a Binder badge.")
     draft: bool = Field(
         default=True,
-        description="True while tutorial.py is still a stub; the example itself is runnable regardless.",
+        description="True while plot_<slug>.py is still a stub; the example itself is runnable regardless.",
     )
 
     references: List[str] = Field(default_factory=list, description="Paper or repository URLs.")
@@ -135,7 +147,7 @@ class TutorialMetadata(BaseModel):
 
     @property
     def is_runnable(self) -> bool:
-        """Whether the narrative may be *executed* by the doc build and the nightly CI job.
+        """Whether the narrative may be *executed* by the doc build and execution CI job.
 
         A tutorial runs only when its narrative is written (not a draft) and it does not require a
         GPU -- hosted CI has none. This is the single definition shared by the sphinx-gallery
@@ -173,7 +185,7 @@ class Bucket(BaseModel):
     color: str = Field(pattern=r"^#[0-9a-fA-F]{6}$", description="Accent colour used by the landing page.")
     summary: str
     # Presentation metadata, consumed by the homepage and domain pages. All optional so the catalog
-    # stays valid without them; icon is an svg symbol id from _static/js/thumbnails (see custom.css).
+    # stays valid without them; icon is an svg symbol id from source/_static/js/thumbnails (see custom.css).
     icon: str = Field(default="nodes", description="Domain symbol id used by thumbnails and cards.")
     examples: List[str] = Field(default_factory=list, description="One or two example topics for the card.")
     status: BucketStatus = Field(default=BucketStatus.ACTIVE)

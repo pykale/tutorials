@@ -7,13 +7,7 @@ real files.
 
 from __future__ import annotations
 
-from migrate_examples import (
-    MIGRATIONS,
-    POST_MIGRATION_PATCHES,
-    _is_authored,
-    _is_excluded,
-    apply_patches,
-)
+from migrate_examples import MIGRATIONS, POST_MIGRATION_PATCHES, _is_authored, _is_excluded, apply_patches
 from models import REPO_ROOT, Catalog
 
 

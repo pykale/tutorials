@@ -1,5 +1,4 @@
-# Hook versions are pinned to match pykale/.pre-commit-config.yaml so a contributor moving between
-# the two repos gets identical formatting decisions.
+# Hook versions are pinned for reproducible formatting and a working local setup.
 repos:
 -   repo: https://github.com/datarootsio/databooks
     rev: 1.3.7
@@ -19,7 +18,7 @@ repos:
     -   id: mixed-line-ending
     -   id: trailing-whitespace
     -   id: debug-statements
-        exclude: ^tutorials/
+        exclude: ^(others|protein|cancer|cardiac|materials)/
     -   id: check-yaml
     -   id: requirements-txt-fixer
 
@@ -30,8 +29,8 @@ repos:
         additional_dependencies: [flake8-print, "importlib-metadata<5.0.0"]
         args: [--config=setup.cfg]
         # Migrated example code is kept byte-identical to upstream pykale/examples, which is itself
-        # excluded from flake8 there. Only tutorial.py, authored here, is linted.
-        exclude: ^tutorials/(?!.*tutorial\.py$).*
+        # excluded from flake8 there. Only plot_<slug>.py, authored here, is linted.
+        exclude: ^(others|protein|cancer|cardiac|materials)/(?!.*plot_[^/]+\.py$).*
 
 -   repo: https://github.com/psf/black
     rev: 23.11.0
@@ -39,18 +38,18 @@ repos:
     -   id: black
         language_version: python3
         additional_dependencies: ['click==8.0.4']
-        exclude: ^tutorials/(?!.*tutorial\.py$).*
+        exclude: ^(others|protein|cancer|cardiac|materials)/(?!.*plot_[^/]+\.py$).*
 
 -   repo: https://github.com/pycqa/isort
-    rev: 5.11.2
+    rev: 5.13.2
     hooks:
     -   id: isort
         args: [--settings-path, ./pyproject.toml]
-        exclude: ^tutorials/(?!.*tutorial\.py$).*
+        exclude: ^(others|protein|cancer|cardiac|materials)/(?!.*plot_[^/]+\.py$).*
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.5.0
     hooks:
     -   id: mypy
-        files: ^(scripts|_shared)/
+        files: ^(scripts|source/_shared)/
         additional_dependencies: [pydantic>=2.9, types-PyYAML]

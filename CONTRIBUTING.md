@@ -11,20 +11,20 @@ pre-commit install
 
 1. **Pick the folder.** The path fixes the domain and the task, so this decision is the important one. Domain buckets are `others`, `protein`, `cancer`, `cardiac`, `materials`. Use `others` when the tutorial demonstrates a method rather than an application. If the tutorial is one of a related set, nest it in a group folder as `others/image_classification/` does.
 
-2. **Copy the templates.**
+2. **Copy the templates.** For example, to add `others/my_tutorial`:
 
    ```bash
-   mkdir -p <domain>/<slug>
-   cp _shared/templates/metadata.template.yml <domain>/<slug>/metadata.yml
-   cp _shared/templates/README.template.md    <domain>/<slug>/README.md
-   cp _shared/templates/tutorial.py.template  <domain>/<slug>/tutorial.py
+   mkdir -p others/my_tutorial
+   cp source/_shared/templates/metadata.template.yml others/my_tutorial/metadata.yml
+   cp source/_shared/templates/README.template.md    others/my_tutorial/README.md
+   cp source/_shared/templates/plot.py.template      others/my_tutorial/plot_my_tutorial.py
    ```
 
 3. **Register it** in `tutorial_catalog.yml` under the right bucket, and in the group's `tutorials:` list if it belongs to one. Order within a list is the order it appears in the gallery, so put the gentlest introduction first.
 
 4. **Fill in `metadata.yml`.** Every field is validated. Derive `kale_api` from the imports the code actually makes, not from prose — upstream READMEs have drifted from their code more than once.
 
-5. **Write `tutorial.py`.** See the conventions below.
+5. **Write `plot_<slug>.py`** (replace `<slug>` with the folder name). See the conventions below.
 
 6. **Check it.**
 
@@ -33,7 +33,7 @@ pre-commit install
    make html-noplot
    ```
 
-## Conventions for `tutorial.py`
+## Conventions for `plot_<slug>.py`
 
 Sphinx-gallery turns this file into an HTML page, a notebook and a downloadable script. It is the only file in the folder that the doc build executes.
 
@@ -42,7 +42,7 @@ Sphinx-gallery turns this file into an HTML page, a notebook and a downloadable 
 - **Make the first plot the best one.** It becomes the gallery thumbnail.
 - **Show the mechanism, not just the score.** A metric says whether it worked; a plot of what the model learned says why.
 - **Set the seed** with `kale.utils.seed.set_seed`, which covers cuDNN as well as Python, NumPy and torch.
-- Sections are `# %%` blocks with an rST heading. Only `tutorial.py` is linted and formatted; migrated example code is deliberately left byte-identical to upstream.
+- Sections are `# %%` blocks with an rST heading. The authored `plot_<slug>.py` narrative is linted and formatted; migrated example code is deliberately left byte-identical to upstream.
 
 ## Migrated examples
 
@@ -52,7 +52,7 @@ Files copied from `pykale/examples` are kept unmodified so that upstream fixes c
 python scripts/migrate_examples.py --pykale-root ../pykale --dry-run
 ```
 
-The sync never overwrites `tutorial.py`, `metadata.yml`, `README.md` or `requirements.txt`. Where a copied file genuinely must change — an import that assumed the `examples` package, for instance — record it in `POST_MIGRATION_PATCHES` in `scripts/migrate_examples.py` rather than editing the file directly, so a re-sync cannot quietly undo it.
+The sync never overwrites `plot_<slug>.py`, `metadata.yml`, `README.md` or `requirements.txt`. Where a copied file genuinely must change — an import that assumed the `examples` package, for instance — record it in `POST_MIGRATION_PATCHES` in `scripts/migrate_examples.py` rather than editing the file directly, so a re-sync cannot quietly undo it.
 
 ## Data
 

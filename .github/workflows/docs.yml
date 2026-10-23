@@ -116,7 +116,7 @@ jobs:
       - run: pip install -e ".[docs,dev]"
       - name: Install PyKale (the tutorials import kale at execution time)
         # Only this job executes tutorials, so only it needs kale. Matches the notebook install cell
-        # (_shared/gallery/notebook_first_cell.py), which installs the same source on Colab.
+        # (source/_shared/gallery/notebook_first_cell.py), which installs the same source on Colab.
         run: pip install "git+https://github.com/pykale/pykale.git"
       - name: Install runnable tutorials' extra dependencies
         run: |

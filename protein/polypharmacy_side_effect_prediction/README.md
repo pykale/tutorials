@@ -2,7 +2,7 @@
 
 Link prediction on a protein-drug knowledge graph. GripNet propagates messages along a task-specific path over a supergraph to predict side effects caused by drug combinations.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_polypharmacy_side_effect_prediction.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

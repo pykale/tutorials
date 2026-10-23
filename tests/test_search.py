@@ -8,7 +8,7 @@ import site_meta
 from models import REPO_ROOT
 
 CONF = (REPO_ROOT / "conf.py").read_text(encoding="utf-8")
-FOOTER = (REPO_ROOT / "_templates" / "footer-links.html").read_text(encoding="utf-8")
+FOOTER = (REPO_ROOT / "source" / "_templates" / "footer-links.html").read_text(encoding="utf-8")
 
 
 def test_visible_desktop_search_field_configured():
@@ -18,7 +18,7 @@ def test_visible_desktop_search_field_configured():
 
 
 def test_search_js_binds_ctrl_k_to_the_input():
-    js = (REPO_ROOT / "_static" / "js" / "search.js").read_text(encoding="utf-8")
+    js = (REPO_ROOT / "source" / "_static" / "js" / "search.js").read_text(encoding="utf-8")
     assert "metaKey" in js and "ctrlKey" in js
     assert "input.focus()" in js
     assert "stopImmediatePropagation" in js  # blocks the theme modal

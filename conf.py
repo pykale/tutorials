@@ -1,8 +1,8 @@
 """Sphinx configuration for the PyKale tutorial gallery.
 
 Everything tutorial-specific comes from ``tutorial_catalog.yml`` via
-``_shared/gallery/sphinx_gallery_config.py``. Adding a tutorial should never require editing this
-file.
+``source/_shared/gallery/sphinx_gallery_config.py``. Adding a tutorial should never require editing
+this file.
 """
 
 from __future__ import annotations
@@ -13,12 +13,13 @@ from datetime import datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent
-sys.path.insert(0, str(REPO_ROOT))
+# Infrastructure (templates, static assets, shared build code, data) lives under source/; put it on
+# the path so ``import _shared`` resolves. Build scripts stay in scripts/.
+sys.path.insert(0, str(REPO_ROOT / "source"))
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
-from models import Catalog  # noqa: E402
-
 from _shared.gallery.sphinx_gallery_config import build_gallery_conf  # noqa: E402
+from models import Catalog  # noqa: E402
 
 CATALOG = Catalog.load()
 
@@ -52,12 +53,12 @@ extensions = [
     "notfound.extension",
     # nbsphinx (for the upstream hand-written .ipynb) is intentionally NOT enabled yet: it needs
     # pandoc, and it collides with sphinx-gallery over the generated plot_*.ipynb download files.
-    # Surfacing the upstream notebooks is a later task (see ROADMAP Phase 2), with pandoc in CI.
+    # Surfacing the upstream notebooks is a separate task, with pandoc in CI.
 ]
 
 source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
 master_doc = "index"
-templates_path = ["_templates"]
+templates_path = ["source/_templates"]
 exclude_patterns = [
     "_build",
     # NB: _gallery is sphinx-gallery's *generated source*, not build output -- it must stay included
@@ -68,10 +69,10 @@ exclude_patterns = [
     "ROADMAP.md",  # contributor/dev doc, not part of the rendered site
     ".github/**",
     ".pytest_cache/**",
-    "_shared/templates/**",
+    "source/_shared/templates/**",
     "docs/**",  # contributor/dev notes, not part of the rendered gallery
     "_generated/**",  # include fragments for the homepage, not standalone pages
-    "_data/**",
+    "source/_data/**",
     # Upstream READMEs are provenance, not documentation -- they would otherwise be picked up as
     # standalone pages that duplicate each tutorial's own README.
     "**/README.upstream.md",
@@ -105,18 +106,21 @@ intersphinx_mapping = {
 # right, search, light/dark toggle. Org-neutral and pairs natively with sphinx-design cards.
 html_theme = "pydata_sphinx_theme"
 html_title = "PyKale Tutorials"
-html_static_path = ["_static"]
+html_static_path = ["source/_static"]
 html_css_files = ["custom.css"]
 html_js_files = ["js/catalog.js", "js/feedback.js", "js/search.js"]
-# _static/pykale_logo.png is gitignored and sourced from _shared/assets/logos. Copy it now, at config
-# import, so it exists before Sphinx validates html_logo -- a bare checkout (as CI runs) otherwise
-# warns that the logo is missing, which is fatal under -W. Runs before builder-inited, where the
-# logo check has already fired.
+# source/_static/pykale_logo.png is gitignored and sourced from source/_shared/assets/logos. Copy it
+# now, at config import, so it exists before Sphinx validates html_logo -- a bare checkout (as CI
+# runs) otherwise warns that the logo is missing, which is fatal under -W. Runs before builder-inited,
+# where the logo check has already fired.
 import shutil as _shutil  # noqa: E402
 
-_shutil.copyfile(REPO_ROOT / "_shared" / "assets" / "logos" / "pykale_logo.png", REPO_ROOT / "_static" / "pykale_logo.png")
+_shutil.copyfile(
+    REPO_ROOT / "source" / "_shared" / "assets" / "logos" / "pykale_logo.png",
+    REPO_ROOT / "source" / "_static" / "pykale_logo.png",
+)
 
-html_logo = "_static/pykale_logo.png"
+html_logo = "source/_static/pykale_logo.png"
 # favicon handled by sphinx-favicon (see `favicons` below), not html_favicon.
 
 from sidebar_context import sidebar_context  # noqa: E402
@@ -135,7 +139,8 @@ PYKALE_VERSION = pykale_release()
 
 html_theme_options = {
     # Navbar order: logo, version chip, then the dropdown nav (left). Go-to-PyKale + utility icons
-    # sit on the right. navbar-nav / navbar-version / navbar-goto are custom templates in _templates/.
+    # sit on the right. navbar-nav / navbar-version / navbar-goto are custom templates in
+    # source/_templates/.
     "navbar_start": ["navbar-logo", "navbar-version"],
     "navbar_center": ["navbar-nav"],
     "navbar_end": ["navbar-goto", "theme-switcher", "navbar-icon-links"],
@@ -193,7 +198,7 @@ html_context = {
 
 # The homepage and the standalone catalogue drop the *left* sidebar (they are landing pages, not
 # docs). The homepage keeps a curated *right* sidebar (secondary_sidebar_items above).
-_LANDING_PAGES = {"index", "all-tutorials"}
+_LANDING_PAGES = {"index", "pages/all-tutorials"}
 html_sidebars = {page: [] for page in _LANDING_PAGES}
 
 
@@ -260,7 +265,7 @@ def _ensure_static_catalog(app):
 
     from export_landing_page import build_payload
 
-    out = REPO_ROOT / "_static" / "tutorials.json"
+    out = REPO_ROOT / "source" / "_static" / "tutorials.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(build_payload(), indent=2) + "\n", encoding="utf-8")
 
@@ -290,9 +295,15 @@ favicons = [
 # sphinx-notfound-page: absolute URLs on the 404 so links work from any depth.
 notfound_urls_prefix = "/tutorials/"
 
-# sphinx-reredirects: old-path -> new-path map for URLs that move. Empty until a page is renamed;
-# having the extension wired now means a future rename is a one-line entry, not a broken link.
-redirects: dict[str, str] = {}
+# sphinx-reredirects: old-path -> new-path map for URLs that move, so existing links do not 404.
+# Content pages moved from the site root into pages/; keep their old URLs alive.
+redirects: dict[str, str] = {
+    "all-tutorials": "pages/all-tutorials.html",
+    "getting-started": "pages/getting-started.html",
+    "learning-paths": "pages/learning-paths.html",
+    "tutorial-status": "pages/tutorial-status.html",
+    "about": "pages/about.html",
+}
 
 # Mermaid diagrams render client-side; no local binary needed for the HTML build.
 mermaid_version = "11.4.1"

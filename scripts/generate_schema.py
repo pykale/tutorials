@@ -1,4 +1,4 @@
-"""Emit ``_shared/metadata/tutorial.schema.json`` from the pydantic model.
+"""Emit ``source/_shared/metadata/tutorial.schema.json`` from the pydantic model.
 
 The schema is generated, never hand-edited, so editors validating ``metadata.yml`` and
 ``validate_catalog.py`` can never drift apart. ``--check`` fails if the committed file is stale,

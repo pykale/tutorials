@@ -2,7 +2,7 @@
 
 Train an 8-layer CNN on CIFAR-10 as a baseline, then stack a Transformer encoder on the same backbone and compare validation accuracy across four Transformer sizes.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_cifar_cnn_transformer.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

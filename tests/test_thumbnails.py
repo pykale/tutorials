@@ -9,13 +9,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from generate_thumbnails import (
-    SYMBOLS,
-    build,
-    resolve_thumbnail,
-    thumbnail_filename,
-    thumbnail_svg,
-)
+from generate_thumbnails import SYMBOLS, build, resolve_thumbnail, thumbnail_filename, thumbnail_svg
 from models import Catalog
 
 
@@ -35,7 +29,7 @@ def test_svg_contains_title_accent_and_badge():
     assert "Domain adaptation" in svg
     assert "#0f766e" in svg
     assert "Draft" in svg  # status carried by text, not colour alone
-    assert 'role="img"' in svg and 'aria-label=' in svg
+    assert 'role="img"' in svg and "aria-label=" in svg
 
 
 def test_no_badge_when_none():

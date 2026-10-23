@@ -2,7 +2,7 @@
 
 An interpretable bilinear attention network over drug molecular graphs and protein sequences, with optional domain adaptation for cross-domain generalisation on BindingDB and BioSNAP.
 
-> **Note:** the narrated `tutorial.py` in this folder is still a stub. The example below
+> **Note:** the narrated `plot_drug_target_interaction_prediction.py` in this folder is still a stub. The example below
 > is complete and runnable.
 
 ## 1. Description

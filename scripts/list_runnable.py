@@ -1,6 +1,6 @@
 """Print the tutorials that are safe to execute on a CPU-only runner.
 
-The nightly CI job (see ``.github/workflows/docs.yml``) installs each runnable tutorial's
+The manually triggered execution job (see ``.github/workflows/docs.yml``) installs each runnable tutorial's
 ``requirements.txt`` before the executing build, so the reference narratives run with their real
 dependencies. ``--requirements`` prints those paths; the default prints tutorial directories.
 

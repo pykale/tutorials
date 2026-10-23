@@ -16,6 +16,7 @@
   var root = document.getElementById("pky-catalog");
   if (root) document.body.classList.add("pky-landing");
   if (!root) return;
+  var siteRoot = root.getAttribute("data-root") || "";
 
   var FACETS = [
     { key: "domain", label: "Domain" },
@@ -95,15 +96,14 @@
   }
 
   function card(t) {
-    var thumb = "_static/thumbnails/" + t.slug + ".svg";
+    var thumb = siteRoot + "_static/thumbnails/" + t.slug + ".svg";
     var tags = (t.modality || []).slice(0, 3).map(function (m) {
       return '<span class="pky-tag">' + esc(m) + "</span>";
     }).join("");
     var statusBadge = t.draft
       ? '<span class="pky-chip pky-chip-draft">Draft</span>'
       : '<span class="pky-chip pky-chip-written">Written</span>';
-    // Relative to the site root (homepage and all-tutorials both live there).
-    var href = "_gallery/" + t.path + "/plot_" + t.slug + ".html";
+    var href = siteRoot + "_gallery/" + t.path + "/plot_" + t.slug + ".html";
     return (
       '<a class="pky-card pky-' + esc(t.domain) + '" href="' + esc(href) + '">' +
       '<img class="pky-card-thumb" src="' + thumb + '" alt="" loading="lazy">' +
