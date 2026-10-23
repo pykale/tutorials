@@ -38,8 +38,8 @@ def test_ecosystem_planned_entries_have_no_url():
 def test_build_writes_all_partials(tmp_path, monkeypatch):
     monkeypatch.setattr(generate_homepage, "GENERATED_DIR", tmp_path)
     count = build()
-    assert count == 5
-    for name in ["news.rst", "domains.rst", "paths.rst", "ecosystem.rst", "status_table.rst"]:
+    assert count == 6
+    for name in ["news.rst", "domains.rst", "paths.rst", "featured_paths.rst", "ecosystem.rst", "status_table.rst"]:
         assert (tmp_path / name).exists(), name
 
 
@@ -60,3 +60,12 @@ def test_news_partial_reads_the_data_file(tmp_path, monkeypatch):
     build()
     news = (tmp_path / "news.rst").read_text(encoding="utf-8")
     assert "Domain-based tutorial structure" in news
+    assert "grid-item-card" not in news
+
+
+def test_status_table_uses_catalog_domain_label(tmp_path, monkeypatch):
+    monkeypatch.setattr(generate_homepage, "GENERATED_DIR", tmp_path)
+    build()
+    status = (tmp_path / "status_table.rst").read_text(encoding="utf-8")
+    assert "     - Others\n" in status
+    assert "     - general\n" not in status

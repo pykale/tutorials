@@ -15,7 +15,7 @@ Learn with PyKale
          <div class="pky-hero-cta">
            <a class="pky-btn pky-btn-primary" href="pages/getting-started.html">Start learning</a>
            <a class="pky-btn pky-btn-ghost" href="pages/all-tutorials.html">Browse tutorials</a>
-           <a class="pky-btn pky-btn-ghost" href="https://github.com/pykale/pykale"
+           <a class="pky-btn pky-btn-ghost" href="https://github.com/pykale/tutorials"
               target="_blank" rel="noopener">View on GitHub ↗</a>
          </div>
        </div>
@@ -37,52 +37,37 @@ Learn with PyKale
      </div>
    </section>
 
+.. raw:: html
+
+   <div class="pky-home-overview">
+
+Get started
+-----------
+
+.. container:: pky-start-steps
+
+   1. **Install PyKale.** Run ``pip install pykale``. :doc:`Setup guide <pages/getting-started>`
+   2. **Try the first tutorial.** :doc:`Domain adaptation on digit images
+      </_gallery/others/image_classification/digit_domain_adaptation/plot_digit_domain_adaptation>`
+      is the recommended starting point.
+   3. **Find your next topic.** :doc:`Browse all tutorials <pages/all-tutorials>` or
+      :doc:`follow a learning path <pages/learning-paths>`.
+
 What's new
 ----------
 
 .. include:: _generated/news.rst
 
-Get started
------------
+.. raw:: html
 
-.. grid:: 1 2 2 4
-   :gutter: 3
-   :class-container: pky-getstarted
-
-   .. grid-item-card:: 1 · Install PyKale
-      :link: https://github.com/pykale/pykale#installation
-
-      ``pip install pykale`` — then you are ready to run any tutorial.
-
-   .. grid-item-card:: 2 · Run your first tutorial
-      :link: _pages/others
-      :link-type: doc
-
-      Domain adaptation on digit images: the recommended starting point.
-
-   .. grid-item-card:: 3 · Explore a domain
-      :link: pages/all-tutorials
-      :link-type: doc
-
-      Browse by Protein, Cancer, Cardiac, Materials or Others.
-
-   .. grid-item-card:: 4 · Adapt it to your data
-      :link: CONTRIBUTING
-      :link-type: doc
-
-      Every tutorial ships its full script — fork it and point it at your own dataset.
+   </div>
 
 Featured learning paths
 -----------------------
 
-Curated routes through the tutorials, using the catalogue's own metadata.
+Choose a route, then follow its tutorials in order.
 
-.. include:: _generated/paths.rst
-
-Browse by domain
-----------------
-
-.. include:: _generated/domains.rst
+.. include:: _generated/featured_paths.rst
 
 Browse all tutorials
 --------------------
@@ -91,20 +76,23 @@ Filter the full catalogue by domain, task, modality, difficulty, runtime and sta
 
 .. raw:: html
 
-   <div id="pky-catalog" class="pky-catalog" data-src="_static/tutorials.json">
+   <div id="pky-catalog" class="pky-catalog" data-home data-src="_static/tutorials.json">
      <div class="pky-catalog-controls">
        <div class="pky-search">
          <label for="pky-q" class="pky-visually-hidden">Search tutorials</label>
          <input id="pky-q" type="search" placeholder="Search tutorials…" autocomplete="off">
        </div>
-       <div id="pky-facets" class="pky-facets" role="group" aria-label="Filters"></div>
+       <details class="pky-filter-details" open>
+         <summary id="pky-filter-summary">Filters</summary>
+         <div id="pky-facets" class="pky-facets" role="group" aria-label="Filters"></div>
+       </details>
        <button id="pky-clear" class="pky-btn pky-btn-ghost pky-clear" type="button">Clear filters</button>
      </div>
      <p id="pky-count" class="pky-count" role="status" aria-live="polite"></p>
      <div id="pky-grid" class="pky-grid"></div>
      <p id="pky-empty" class="pky-empty" hidden>No tutorials match these filters.</p>
      <noscript>
-       <p>Enable JavaScript to filter, or browse the domains above.</p>
+       <p>Enable JavaScript to filter, or use the Domains menu to browse tutorials.</p>
      </noscript>
    </div>
 
@@ -128,7 +116,7 @@ Contributing
       See which narratives are still drafts and pick one to write.
 
    .. grid-item-card:: Report an issue
-      :link: https://github.com/pykale/pykale/issues
+      :link: https://github.com/pykale/tutorials/issues
 
       Something wrong or unclear? Open an issue.
 

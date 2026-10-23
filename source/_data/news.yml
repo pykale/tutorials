@@ -6,29 +6,18 @@
   date: 2026-07-24
   badge: New
   summary: >-
-    Tutorials are now organised by the domain that owns them -- Protein, Cancer, Cardiac, Materials
-    and Others -- each with its own page and colour.
+    Browse tutorials by Protein, Cancer, Cardiac or general methods.
 
 - title: Executable Sphinx-Gallery tutorials
   date: 2026-07-24
   badge: New
   summary: >-
-    Every tutorial is a runnable script. The narrated version builds into a notebook and a
-    downloadable Python file. The executing CI build can be run manually; its nightly schedule is
-    currently disabled.
+    Each tutorial includes a runnable script. Narrated walkthroughs are being completed.
 
 - title: Reference tutorial available
   date: 2026-07-24
   badge: Updated
   summary: >-
-    Domain adaptation on digit images is fully written -- the recommended starting point for
-    transfer learning with PyKale.
-  link: _pages/others
-  link_text: Read it
-
-- title: Materials domain
-  date: 2026-07-24
-  badge: Planned
-  summary: >-
-    A Materials domain is reserved for structure/property prediction and crystal descriptors.
-    Tutorials are in development.
+    The digit-image domain adaptation walkthrough is ready for first-time readers.
+  link: /_gallery/others/image_classification/digit_domain_adaptation/plot_digit_domain_adaptation
+  link_text: Read tutorial

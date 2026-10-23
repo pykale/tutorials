@@ -10,7 +10,7 @@ What this is
 
 Each tutorial is a self-contained folder: a narrated ``plot_<slug>.py`` that reads top to bottom and
 builds into a notebook, plus the full ``main.py`` experiment it is drawn from. Tutorials are
-organised by the domain that owns them — General, Protein, Cancer, Cardiac and Materials — and every
+organised by the domain that owns them — Others, Protein, Cancer, Cardiac and Materials — and every
 tutorial carries structured metadata (task, modality, difficulty, runtime, status) that drives the
 filters, learning paths and status page.
 

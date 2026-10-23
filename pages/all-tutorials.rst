@@ -14,7 +14,10 @@ count and URL update as you go, so a filtered view can be shared.
          <label for="pky-q" class="pky-visually-hidden">Search tutorials</label>
          <input id="pky-q" type="search" placeholder="Search tutorials…" autocomplete="off">
        </div>
-       <div id="pky-facets" class="pky-facets" role="group" aria-label="Filters"></div>
+       <details class="pky-filter-details" open>
+         <summary id="pky-filter-summary">Filters</summary>
+         <div id="pky-facets" class="pky-facets" role="group" aria-label="Filters"></div>
+       </details>
        <button id="pky-clear" class="pky-btn pky-btn-ghost pky-clear" type="button">Clear filters</button>
      </div>
      <p id="pky-count" class="pky-count" role="status" aria-live="polite"></p>

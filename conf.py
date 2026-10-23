@@ -287,9 +287,9 @@ ogp_site_url = html_baseurl
 ogp_site_name = "PyKale Tutorials"
 ogp_description_length = 200
 
-# sphinx-favicon: reuse the PyKale mark (served from _static).
+# Use the compact PyKale mark for browser tabs; the wide logo remains in the navbar.
 favicons = [
-    {"href": "pykale_logo.png"},
+    {"href": "pykale_favicon.png"},
 ]
 
 # sphinx-notfound-page: absolute URLs on the 404 so links work from any depth.

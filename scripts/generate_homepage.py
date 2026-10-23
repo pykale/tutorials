@@ -43,22 +43,15 @@ def _gallery_doc(path: str) -> str:
 
 def _news_rst() -> str:
     items = yaml.safe_load(NEWS_FILE.read_text(encoding="utf-8")) or []
-    out = [".. grid:: 1 2 2 2", "   :gutter: 3", "   :class-container: pky-news", ""]
+    out = [".. container:: pky-news", ""]
     for item in items:
         badge = item.get("badge", "")
         role = BADGE_ROLE.get(badge, "bdg-secondary")
         badge_rst = f":{role}:`{badge}`" if badge else ""
-        out += [
-            "   .. grid-item-card::",
-            "      :class-card: pky-news-card",
-            "",
-            f"      {badge_rst} **{item['title']}**",
-            "",
-            f"      {' '.join(item['summary'].split())}",
-        ]
+        content = f"{badge_rst} **{item['title']}** — {' '.join(item['summary'].split())}"
         if item.get("link"):
-            out += ["", f"      :doc:`{item.get('link_text', 'Learn more')} <{item['link']}>`"]
-        out.append("")
+            content += f" :doc:`{item.get('link_text', 'Learn more')} <{item['link']}>`"
+        out.append(f"   - {content}")
     return "\n".join(out) + "\n"
 
 
@@ -91,19 +84,42 @@ def _domains_rst() -> str:
 def _paths_rst() -> str:
     catalog = Catalog.load()
     slug_to_path = catalog.slug_to_path()
-    out = [".. grid:: 1 2 2 2", "   :gutter: 3", "   :class-container: pky-paths", ""]
+    out: List[str] = []
     for path_def in catalog.learning_paths:
-        steps: List[str] = []
+        out += [
+            f".. _learning-path-{path_def.id}:",
+            "",
+            path_def.title,
+            "-" * len(path_def.title),
+            "",
+            " ".join(path_def.summary.split()),
+            "",
+        ]
         for i, slug in enumerate(path_def.tutorials, 1):
             meta = _meta(slug_to_path[slug])
-            steps.append(f"      {i}. :doc:`{meta.title} <{_gallery_doc(slug_to_path[slug])}>`")
+            out.append(f"{i}. :doc:`{meta.title} <{_gallery_doc(slug_to_path[slug])}>`")
+        out.append("")
+    return "\n".join(out) + "\n"
+
+
+def _featured_paths_rst() -> str:
+    catalog = Catalog.load()
+    slug_to_path = catalog.slug_to_path()
+    out = [".. grid:: 1 2 2 4", "   :gutter: 2", "   :class-container: pky-featured-paths", ""]
+    for path_def in catalog.learning_paths:
+        first = _meta(slug_to_path[path_def.tutorials[0]])
         out += [
             f"   .. grid-item-card:: {path_def.title}",
-            "      :class-card: pky-path-card",
+            f"      :link: learning-path-{path_def.id}",
+            "      :link-type: ref",
+            "      :class-card: pky-featured-path",
             "",
             f"      {' '.join(path_def.summary.split())}",
             "",
-            *steps,
+            f"      {len(path_def.tutorials)} tutorials · Starts with {first.title}",
+            "",
+            "      +++",
+            "      View path →",
             "",
         ]
     return "\n".join(out) + "\n"
@@ -128,6 +144,7 @@ def _ecosystem_rst() -> str:
 def _status_table_rst() -> str:
     """A list-table of every tutorial's status, for the Tutorial Status page."""
     catalog = Catalog.load()
+    domain_labels = {bucket.id.value: bucket.label for bucket in catalog.buckets}
     rows = [
         ".. list-table::",
         "   :header-rows: 1",
@@ -145,9 +162,9 @@ def _status_table_rst() -> str:
         status = "Draft" if meta.draft else "Written"
         rows += [
             f"   * - :doc:`{meta.title} <{_gallery_doc(path)}>`",
-            f"     - {meta.domain.value if meta.domain.value != 'others' else 'general'}",
+            f"     - {domain_labels[meta.domain.value]}",
             f"     - {status}",
-            f"     - {meta.difficulty.value}",
+            f"     - {meta.difficulty.value.capitalize()}",
             f"     - {meta.estimated_runtime}",
         ]
     return "\n".join(rows) + "\n"
@@ -159,6 +176,7 @@ def build() -> int:
         "news.rst": _news_rst(),
         "domains.rst": _domains_rst(),
         "paths.rst": _paths_rst(),
+        "featured_paths.rst": _featured_paths_rst(),
         "ecosystem.rst": _ecosystem_rst(),
         "status_table.rst": _status_table_rst(),
     }
