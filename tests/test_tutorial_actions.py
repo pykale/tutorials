@@ -14,18 +14,18 @@ def test_github_source_url_points_at_the_tutorial_script():
     assert not url.rstrip("/").endswith("tutorials")  # never the repo homepage
 
 
-def test_notebook_url_shape():
-    assert notebook_url(REL, SLUG).endswith("/notebooks/" + REL + "/plot_cifar_isonet.ipynb")
+def test_notebook_url_points_at_the_in_folder_notebook():
+    assert notebook_url(REL).endswith("/" + REL + "/tutorial.ipynb")
 
 
 def test_actions_github_always_enabled():
-    actions = tutorial_actions(REL, SLUG, draft=True, notebooks_published=False)
+    actions = tutorial_actions(REL, SLUG, draft=True, has_notebook=False)
     assert actions["github"]["enabled"] is True
     assert actions["github"]["url"].startswith("https://github.com/")
 
 
-def test_colab_and_notebook_disabled_when_unpublished():
-    actions = tutorial_actions(REL, SLUG, draft=False, notebooks_published=False)
+def test_colab_and_notebook_disabled_without_a_notebook():
+    actions = tutorial_actions(REL, SLUG, draft=False, has_notebook=False)
     assert actions["colab"]["enabled"] is False
     assert actions["colab"]["url"] is None
     assert actions["colab"]["reason"]  # a human-readable reason is present
@@ -34,15 +34,17 @@ def test_colab_and_notebook_disabled_when_unpublished():
 
 
 def test_draft_notebook_reason_mentions_draft():
-    actions = tutorial_actions(REL, SLUG, draft=True, notebooks_published=False)
+    actions = tutorial_actions(REL, SLUG, draft=True, has_notebook=False)
     assert "draft" in actions["notebook"]["reason"].lower()
 
 
-def test_actions_enabled_when_published():
-    actions = tutorial_actions(REL, SLUG, draft=False, notebooks_published=True)
+def test_actions_enabled_when_notebook_present():
+    actions = tutorial_actions(REL, SLUG, draft=False, has_notebook=True)
     assert actions["colab"]["enabled"] is True
     assert "colab.research.google.com" in actions["colab"]["url"]
+    assert actions["colab"]["url"].endswith("/" + REL + "/tutorial.ipynb")
     assert actions["notebook"]["enabled"] is True
+    assert actions["notebook"]["url"].endswith("/" + REL + "/tutorial.ipynb")
 
 
 def test_pagename_mapping():

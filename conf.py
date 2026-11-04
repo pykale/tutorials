@@ -224,12 +224,14 @@ def _nav_context(app, pagename, templatename, context, doctree):
     if pagename in _LANDING_PAGES:
         context["body_class"] = "pky-landing"
 
-    # Tutorial pages: derive the action-toolbar links from the catalogue path.
+    # Tutorial pages: derive the action-toolbar links from the catalogue path. A tutorial's Colab and
+    # Notebook buttons go live as soon as it ships a self-contained tutorial.ipynb in its own folder.
     mapped = gallery_pagename_to_tutorial(pagename)
     if mapped:
         rel_path, slug = mapped
         draft = _DRAFT_BY_SLUG.get(slug, False)
-        context["pky_tutorial"] = tutorial_actions(rel_path, slug, draft=draft)
+        has_notebook = (REPO_ROOT / rel_path / "tutorial.ipynb").exists()
+        context["pky_tutorial"] = tutorial_actions(rel_path, slug, draft=draft, has_notebook=has_notebook)
         context["pky_tutorial_draft"] = draft
 
     # Left-sidebar context label ("Tutorials in General" / "More General tutorials"), data-driven.
