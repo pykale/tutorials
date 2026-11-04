@@ -1,9 +1,9 @@
 """Derive the per-tutorial action links (GitHub source, Notebook download, Run in Colab).
 
-All URLs are derived from the tutorial's catalogue path and ``site_meta`` -- never hard-coded per
-tutorial. Colab and Notebook are only offered as working links when notebooks are actually published
-(``site_meta.NOTEBOOKS_PUBLISHED``); otherwise they are returned disabled with an explanatory reason,
-so the UI never shows a working-looking dead link.
+All URLs are derived from the tutorial's catalogue path -- never hard-coded per tutorial. Each tutorial
+ships a self-contained, Colab-runnable ``tutorial.ipynb`` *in its own folder*; Colab and Notebook are
+offered as working links for the tutorials that have one (``has_notebook``) and returned disabled with
+an explanatory reason for those that do not yet, so the UI never shows a working-looking dead link.
 
 ``conf.py`` calls :func:`tutorial_actions` from an html-page-context hook for each gallery page and
 puts the result in ``context["pky_tutorial"]``; ``source/_templates/tutorial-actions.html`` renders it.
@@ -13,10 +13,10 @@ from __future__ import annotations
 
 from typing import Dict, Optional, TypedDict
 
-from site_meta import FEEDBACK_REPO, NOTEBOOKS_PUBLISHED, REPO_BRANCH
+from site_meta import FEEDBACK_REPO, REPO_BRANCH
 
-# Where CI is expected to publish sphinx-gallery notebooks (see source/_shared/launch/colab.py).
-NOTEBOOK_DIR = "notebooks"
+# The self-contained notebook each tutorial folder publishes, next to its narrative and example code.
+NOTEBOOK_FILENAME = "tutorial.ipynb"
 
 
 class TutorialAction(TypedDict):
@@ -35,14 +35,19 @@ def github_source_url(rel_path: str, slug: str, repo: str = FEEDBACK_REPO, branc
     return f"https://github.com/{repo}/blob/{branch}/{source_path(rel_path, slug)}"
 
 
-def notebook_url(rel_path: str, slug: str, repo: str = FEEDBACK_REPO, branch: str = REPO_BRANCH) -> str:
-    """Raw GitHub URL of the published notebook (valid only once notebooks are published)."""
-    return f"https://github.com/{repo}/blob/{branch}/{NOTEBOOK_DIR}/{rel_path}/plot_{slug}.ipynb"
+def notebook_path(rel_path: str) -> str:
+    """Repo path of a tutorial's self-contained notebook, e.g. ``others/.../cifar_isonet/tutorial.ipynb``."""
+    return f"{rel_path}/{NOTEBOOK_FILENAME}"
 
 
-def colab_url(rel_path: str, slug: str, repo: str = FEEDBACK_REPO, branch: str = REPO_BRANCH) -> str:
-    """Colab URL for the published notebook."""
-    return f"https://colab.research.google.com/github/{repo}/blob/{branch}/{NOTEBOOK_DIR}/{rel_path}/plot_{slug}.ipynb"
+def notebook_url(rel_path: str, repo: str = FEEDBACK_REPO, branch: str = REPO_BRANCH) -> str:
+    """GitHub blob URL of the tutorial's self-contained notebook."""
+    return f"https://github.com/{repo}/blob/{branch}/{notebook_path(rel_path)}"
+
+
+def colab_url(rel_path: str, repo: str = FEEDBACK_REPO, branch: str = REPO_BRANCH) -> str:
+    """Google Colab URL that opens the tutorial's self-contained notebook straight from GitHub."""
+    return f"https://colab.research.google.com/github/{repo}/blob/{branch}/{notebook_path(rel_path)}"
 
 
 def tutorial_actions(
@@ -50,37 +55,37 @@ def tutorial_actions(
     slug: str,
     *,
     draft: bool = False,
-    notebooks_published: bool = NOTEBOOKS_PUBLISHED,
+    has_notebook: bool = False,
 ) -> Dict[str, TutorialAction]:
     """Build the action set for one tutorial.
 
     Args:
         rel_path: Tutorial directory relative to the repo root (e.g. ``others/.../cifar_isonet``).
         slug: Tutorial slug.
-        draft: Whether the narrative is still a draft (affects the Notebook tooltip only).
-        notebooks_published: Whether generated notebooks are publicly available.
+        draft: Whether the narrative is still a draft (affects the disabled tooltip only).
+        has_notebook: Whether this tutorial ships a ``tutorial.ipynb`` in its folder.
 
     Returns:
         dict: ``{action: {"url", "enabled", "reason"}}`` for ``github``, ``notebook`` and ``colab``.
-        ``github`` is always enabled; the other two are enabled only when notebooks are published,
-        and otherwise carry a human-readable ``reason`` for the disabled state.
+        ``github`` is always enabled; Notebook and Colab are enabled for tutorials that have a
+        ``tutorial.ipynb`` and otherwise carry a human-readable ``reason`` for the disabled state.
     """
     github: TutorialAction = {"url": github_source_url(rel_path, slug), "enabled": True, "reason": None}
 
-    if notebooks_published:
-        notebook: TutorialAction = {"url": notebook_url(rel_path, slug), "enabled": True, "reason": None}
-        colab: TutorialAction = {"url": colab_url(rel_path, slug), "enabled": True, "reason": None}
+    if has_notebook:
+        notebook: TutorialAction = {"url": notebook_url(rel_path), "enabled": True, "reason": None}
+        colab: TutorialAction = {"url": colab_url(rel_path), "enabled": True, "reason": None}
     else:
         reason = (
-            "Notebook will be available when this draft becomes executable."
+            "A runnable notebook is coming once this draft's narrative is written."
             if draft
-            else "Notebook will be available once tutorials are published."
+            else "A runnable notebook is being prepared for this tutorial."
         )
         notebook = {"url": None, "enabled": False, "reason": reason}
         colab = {
             "url": None,
             "enabled": False,
-            "reason": "Run in Colab will be available once notebooks are published.",
+            "reason": "Run in Colab will be available once this tutorial's notebook is published.",
         }
 
     return {"github": github, "notebook": notebook, "colab": colab}
